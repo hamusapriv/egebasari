@@ -76,7 +76,7 @@ const wallHeight = 2;
 
 // ----- Textures -----
 const textureLoader = new THREE.TextureLoader();
-const floorTexture = textureLoader.load("/assets/floor.jpeg");
+const floorTexture = textureLoader.load("assets/floor.jpeg");
 floorTexture.wrapS = THREE.RepeatWrapping;
 floorTexture.wrapT = THREE.RepeatWrapping;
 floorTexture.repeat.set(2, 2);
@@ -435,7 +435,7 @@ function placeClassroomRows(
 placeClassroomRows(3, 2, -1.5, 1.6, 1.2);
 
 // Poster
-const posterTexture = textureLoader.load("/assets/world-map.jpg");
+const posterTexture = textureLoader.load("assets/world-map.jpg");
 const posterWidth = 2;
 const posterHeight = 1;
 const posterGeometry = new THREE.PlaneGeometry(posterWidth, posterHeight);
