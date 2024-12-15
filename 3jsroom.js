@@ -463,7 +463,9 @@ obstacles.forEach((obj) => {
 const player = new THREE.Object3D();
 scene.add(player);
 
-const moveSpeed = 0.01;
+const normalSpeed = 0.01;
+const sprintSpeed = 0.03; // Adjust sprint speed as desired
+let moveSpeed = normalSpeed;
 const keys = {};
 
 function playerBox() {
@@ -515,6 +517,13 @@ function handleMovement() {
   if (keys["KeyS"]) directionZ -= 0.5;
   if (keys["KeyA"]) directionX += 0.5;
   if (keys["KeyD"]) directionX -= 0.5;
+
+  // Check if Shift is pressed for sprinting
+  if (keys["ShiftLeft"] || keys["ShiftRight"]) {
+    moveSpeed = sprintSpeed;
+  } else {
+    moveSpeed = normalSpeed;
+  }
 
   const moveDir = new THREE.Vector3();
   moveDir.addScaledVector(forwardVector, directionZ);
