@@ -17,15 +17,6 @@ document.body.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xaaaaaa);
 
-// If you have an HDR environment map:
-// const pmrem = new THREE.PMREMGenerator(renderer);
-// textureLoader.load('/assets/envMap.hdr', (hdrTexture) => {
-//   const envMap = pmrem.fromEquirectangular(hdrTexture).texture;
-//   scene.environment = envMap;
-//   scene.background = envMap;
-//   hdrTexture.dispose();
-// });
-
 // ----- Camera Setup -----
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -33,18 +24,16 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(-2, 1, -4);
-camera.lookAt(0, 1, 0);
+camera.position.set(0, 0, -10);
+camera.lookAt(0, 0.75, 0);
 
 // ----- Lights -----
-// Lower ambient and hemisphere lights for more contrast
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight);
 
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0xc1c1c1, 0.4);
 scene.add(hemiLight);
 
-// Add a directional light to simulate a main light source (like sunlight)
 const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
 dirLight.position.set(2, 4, -2);
 dirLight.castShadow = true;
@@ -52,9 +41,6 @@ dirLight.shadow.mapSize.width = 2048;
 dirLight.shadow.mapSize.height = 2048;
 scene.add(dirLight);
 
-// Reduced intensity point lights or remove them if not needed
-// Here we can remove or drastically lower them since directional + hemisphere + ambient may suffice.
-// If you keep them, make them very subtle:
 const ceilingHeight = 2;
 const rows = 2;
 const cols = 3;
@@ -74,14 +60,12 @@ const floorSize = 6;
 const wallWidth = 6;
 const wallHeight = 2;
 
-// ----- Textures -----
 const textureLoader = new THREE.TextureLoader();
 const floorTexture = textureLoader.load("assets/floor.jpeg");
 floorTexture.wrapS = THREE.RepeatWrapping;
 floorTexture.wrapT = THREE.RepeatWrapping;
 floorTexture.repeat.set(2, 2);
 
-// Create gradient texture for walls
 function createGradientTexture(topColor, bottomColor, size = 256) {
   const canvas = document.createElement("canvas");
   canvas.width = 1;
@@ -104,7 +88,6 @@ function createGradientTexture(topColor, bottomColor, size = 256) {
 
 const wallGradientTexture = createGradientTexture("#ffffff", "#3399ff");
 
-// ----- Materials (Using MeshStandardMaterial for PBR) -----
 const floorMaterial = new THREE.MeshStandardMaterial({
   map: floorTexture,
   side: THREE.DoubleSide,
@@ -148,7 +131,6 @@ floorMesh.position.set(0, 0.05, 0);
 floorMesh.receiveShadow = true;
 scene.add(floorMesh);
 
-// ----- Walls -----
 function createWall(geometry, material, x, y, z, rotY = 0) {
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.set(x, y, z);
@@ -204,11 +186,9 @@ ceilingMesh.rotation.x = Math.PI / 2;
 ceilingMesh.receiveShadow = true;
 scene.add(ceilingMesh);
 
-// Arrays for obstacles
 const obstacles = [];
 const obstacleBoxes = [];
 
-// Whiteboard
 const whiteboardGeometry = new THREE.BoxGeometry(2, 1, 0.05);
 const whiteboardMesh = new THREE.Mesh(whiteboardGeometry, whiteboardMaterial);
 whiteboardMesh.position.set(0, wallHeight / 2, floorSize / 2 - 0.05);
@@ -219,20 +199,21 @@ whiteboardMesh.receiveShadow = true;
 scene.add(whiteboardMesh);
 obstacles.push(whiteboardMesh);
 
-// Desk and Chair
+// We'll store seat buttons in an array
+const seatButtons = [];
+
 function createDesk() {
   const desk = new THREE.Group();
   const deskWidth = 1.0;
   const deskDepth = 0.6;
   const deskHeight = 0.75;
 
-  // Use RoundedBoxGeometry for the desktop
   const deskTopGeometry = new RoundedBoxGeometry(
     deskWidth + 0.01,
     0.02,
     deskDepth + 0.01,
-    6, // segments for smoothness
-    0.01 // radius for rounded corners
+    6,
+    0.01
   );
   const deskTopMaterial = new THREE.MeshStandardMaterial({
     color: 0xe1e1e1,
@@ -250,13 +231,12 @@ function createDesk() {
   const legDepth = 0.05;
 
   function createLeg(x, z) {
-    // RoundedBoxGeometry for legs
     const legGeom = new RoundedBoxGeometry(
       legWidth,
       deskHeight,
       legDepth,
-      4, // fewer segments since legs are small
-      0.01 // small radius for slight rounding
+      4,
+      0.01
     );
     const leg = new THREE.Mesh(legGeom, metalMaterial);
     leg.position.set(x, deskHeight / 2, z);
@@ -272,7 +252,6 @@ function createDesk() {
     createLeg(deskWidth / 2 - legWidth / 2, -deskDepth / 2 + legDepth / 2)
   );
 
-  // Support bar
   const supportBarGeometry = new RoundedBoxGeometry(
     deskWidth,
     0.03,
@@ -286,19 +265,12 @@ function createDesk() {
   supportBar.receiveShadow = true;
   desk.add(supportBar);
 
-  // Wire basket (still can be rounded)
   const basketWidth = deskWidth * 0.95;
   const basketDepth = deskDepth * 0.95;
   const basketFrameThickness = 0.01;
 
   function createBar(width, height, depth) {
-    const barGeom = new RoundedBoxGeometry(
-      width,
-      height,
-      depth,
-      4,
-      0.002 // very small radius for wires
-    );
+    const barGeom = new RoundedBoxGeometry(width, height, depth, 4, 0.002);
     const bar = new THREE.Mesh(barGeom, metalMaterial);
     bar.castShadow = true;
     bar.receiveShadow = true;
@@ -349,7 +321,6 @@ function createChair() {
   const seatDepth = 0.4;
   const seatHeight = 0.03;
 
-  // Rounded seat
   const seatGeom = new RoundedBoxGeometry(
     seatWidth,
     seatHeight,
@@ -365,7 +336,6 @@ function createChair() {
 
   const backrestHeight = 0.5;
   const backrestThickness = 0.02;
-  // Rounded backrest
   const backrestGeom = new RoundedBoxGeometry(
     seatWidth,
     backrestHeight,
@@ -408,6 +378,11 @@ function createChair() {
   return chair;
 }
 
+// We'll need original position/rotation for standing up
+let originalPosition = new THREE.Vector3();
+let originalRotation = new THREE.Euler();
+let isSitting = false;
+
 function placeClassroomRows(
   rows,
   cols,
@@ -428,13 +403,27 @@ function placeClassroomRows(
       scene.add(d);
       scene.add(ch);
       obstacles.push(d, ch);
+
+      // Create a button above the seat
+      const buttonGeom = new THREE.BoxGeometry(0.1, 0.001, 0.1);
+      const buttonMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+      const button = new THREE.Mesh(buttonGeom, buttonMat);
+      button.position.set(xPos - 0.43, 0.81, zPos + 0.26); // above the chair seat
+      button.userData.isButton = true;
+      // seat position and look at position
+      button.userData.seatPos = new THREE.Vector3(xPos, 0.05, zPos + 0.1);
+      button.userData.lookAtPos = new THREE.Vector3(0, -20, zPos + 20); // look towards desk
+      scene.add(button);
+      seatButtons.push(button);
     }
   }
 }
+// After creating scene and camera, for example right after scene and camera setup:
+const axesHelper = new THREE.AxesHelper(2); // The number sets the length of the helper lines
+scene.add(axesHelper);
 
 placeClassroomRows(3, 2, -1.5, 1.6, 1.2);
 
-// Poster
 const posterTexture = textureLoader.load("assets/world-map.jpg");
 const posterWidth = 2;
 const posterHeight = 1;
@@ -452,7 +441,6 @@ posterMesh.castShadow = true;
 posterMesh.receiveShadow = true;
 scene.add(posterMesh);
 
-// Compute bounding boxes
 obstacles.forEach((obj) => {
   obj.updateMatrixWorld(true);
   const box = new THREE.Box3().setFromObject(obj);
@@ -499,6 +487,48 @@ document.body.addEventListener("click", () => {
   controls.lock();
 });
 
+// Add raycasting for buttons
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+/* const seatButtons = []; // Defined above when placing rows
+ */
+function onMouseDown(event) {
+  if (!controls.isLocked) return;
+
+  // Raycast straight ahead
+  mouse.x = 0;
+  mouse.y = 0;
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(seatButtons, true);
+  if (intersects.length > 0) {
+    const button = intersects[0].object;
+    if (button.userData.isButton) {
+      sitDown(button.userData.seatPos, button.userData.lookAtPos);
+    }
+  }
+}
+
+document.addEventListener("mousedown", onMouseDown, false);
+
+function sitDown(seatPos, lookAtPos) {
+  // Store original position/rotation
+  originalPosition.copy(player.position);
+  originalRotation.copy(camera.rotation);
+
+  // Move player to seat
+  player.position.copy(seatPos);
+  camera.lookAt(lookAtPos);
+  isSitting = true;
+}
+
+function standUp() {
+  // Return to original pos/rot
+  player.position.copy(originalPosition);
+  camera.rotation.copy(originalRotation);
+  isSitting = false;
+}
+
 // Movement direction vectors
 const forwardVector = new THREE.Vector3();
 const sideVector = new THREE.Vector3();
@@ -513,12 +543,15 @@ function handleMovement() {
   let directionX = 0;
   let directionZ = 0;
 
-  if (keys["KeyW"]) directionZ += 0.5;
-  if (keys["KeyS"]) directionZ -= 0.5;
-  if (keys["KeyA"]) directionX += 0.5;
-  if (keys["KeyD"]) directionX -= 0.5;
+  // Disable WASD if sitting
+  if (!isSitting) {
+    if (keys["KeyW"]) directionZ += 0.5;
+    if (keys["KeyS"]) directionZ -= 0.5;
+    if (keys["KeyA"]) directionX += 0.5;
+    if (keys["KeyD"]) directionX -= 0.5;
+  }
 
-  // Check if Shift is pressed for sprinting
+  // Sprint check
   if (keys["ShiftLeft"] || keys["ShiftRight"]) {
     moveSpeed = sprintSpeed;
   } else {
@@ -554,6 +587,11 @@ function handleMovement() {
 
 window.addEventListener("keydown", (event) => {
   keys[event.code] = true;
+
+  // Stand up if sitting and ESC or SPACE is pressed
+  if ((event.code === "Escape" || event.code === "Space") && isSitting) {
+    standUp();
+  }
 });
 
 window.addEventListener("keyup", (event) => {
