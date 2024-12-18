@@ -6,11 +6,10 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
-// More realistic color space and tone mapping
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; // softer shadows
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
 // ----- Scene Setup -----
@@ -378,7 +377,6 @@ function createChair() {
   return chair;
 }
 
-// We'll need original position/rotation for standing up
 let originalPosition = new THREE.Vector3();
 let originalRotation = new THREE.Euler();
 let isSitting = false;
@@ -408,18 +406,17 @@ function placeClassroomRows(
       const buttonGeom = new THREE.BoxGeometry(0.1, 0.001, 0.1);
       const buttonMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
       const button = new THREE.Mesh(buttonGeom, buttonMat);
-      button.position.set(xPos - 0.43, 0.81, zPos + 0.26); // above the chair seat
+      button.position.set(xPos - 0.43, 0.81, zPos + 0.26);
       button.userData.isButton = true;
-      // seat position and look at position
       button.userData.seatPos = new THREE.Vector3(xPos, 0.05, zPos + 0.1);
-      button.userData.lookAtPos = new THREE.Vector3(0, -20, zPos + 20); // look towards desk
+      button.userData.lookAtPos = new THREE.Vector3(0, -20, zPos + 20);
       scene.add(button);
       seatButtons.push(button);
     }
   }
 }
-// After creating scene and camera, for example right after scene and camera setup:
-const axesHelper = new THREE.AxesHelper(2); // The number sets the length of the helper lines
+
+const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
 
 placeClassroomRows(3, 2, -1.5, 1.6, 1.2);
@@ -452,7 +449,7 @@ const player = new THREE.Object3D();
 scene.add(player);
 
 const normalSpeed = 0.01;
-const sprintSpeed = 0.03; // Adjust sprint speed as desired
+const sprintSpeed = 0.03;
 let moveSpeed = normalSpeed;
 const keys = {};
 
@@ -481,21 +478,19 @@ function checkCollisions(newPosition) {
   return false;
 }
 
-// Pointer Lock Controls
+// Pointer Lock (still works on desktop)
 const controls = new PointerLockControls(camera, document.body);
 document.body.addEventListener("click", () => {
   controls.lock();
 });
 
-// Add raycasting for buttons
+// Raycasting for buttons
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-/* const seatButtons = []; // Defined above when placing rows
- */
+
 function onMouseDown(event) {
   if (!controls.isLocked) return;
 
-  // Raycast straight ahead
   mouse.x = 0;
   mouse.y = 0;
   raycaster.setFromCamera(mouse, camera);
@@ -512,18 +507,14 @@ function onMouseDown(event) {
 document.addEventListener("mousedown", onMouseDown, false);
 
 function sitDown(seatPos, lookAtPos) {
-  // Store original position/rotation
   originalPosition.copy(player.position);
   originalRotation.copy(camera.rotation);
-
-  // Move player to seat
   player.position.copy(seatPos);
   camera.lookAt(lookAtPos);
   isSitting = true;
 }
 
 function standUp() {
-  // Return to original pos/rot
   player.position.copy(originalPosition);
   camera.rotation.copy(originalRotation);
   isSitting = false;
@@ -532,6 +523,86 @@ function standUp() {
 // Movement direction vectors
 const forwardVector = new THREE.Vector3();
 const sideVector = new THREE.Vector3();
+
+// MOBILE: Variables for touch controls
+let lookActive = false;
+let lookStartX = 0;
+let lookStartY = 0;
+
+let moveActive = false;
+let moveStartX = 0;
+let moveStartY = 0;
+let moveVector = new THREE.Vector3();
+
+// MOBILE: Touch areas
+const lookArea = document.getElementById("look-area");
+const joystickArea = document.getElementById("joystick-area");
+
+// MOBILE: Camera look handling
+lookArea.addEventListener("touchstart", (e) => {
+  const touch = e.touches[0];
+  lookStartX = touch.clientX;
+  lookStartY = touch.clientY;
+  lookActive = true;
+});
+
+lookArea.addEventListener("touchmove", (e) => {
+  if (!lookActive) return;
+  const touch = e.touches[0];
+  const deltaX = touch.clientX - lookStartX;
+  const deltaY = touch.clientY - lookStartY;
+
+  const lookSensitivity = 0.002;
+  controls.getObject().rotation.y -= deltaX * lookSensitivity;
+  camera.rotation.x -= deltaY * lookSensitivity;
+
+  const maxPitch = Math.PI / 2 - 0.1;
+  camera.rotation.x = Math.max(
+    -maxPitch,
+    Math.min(maxPitch, camera.rotation.x)
+  );
+
+  lookStartX = touch.clientX;
+  lookStartY = touch.clientY;
+});
+
+lookArea.addEventListener("touchend", () => {
+  lookActive = false;
+});
+
+// MOBILE: Movement (joystick) handling
+joystickArea.addEventListener("touchstart", (e) => {
+  const touch = e.touches[0];
+  moveStartX = touch.clientX;
+  moveStartY = touch.clientY;
+  moveActive = true;
+});
+
+joystickArea.addEventListener("touchmove", (e) => {
+  if (!moveActive) return;
+  const touch = e.touches[0];
+  const dx = touch.clientX - moveStartX;
+  const dy = touch.clientY - moveStartY;
+
+  const maxDistance = 50;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  const clampedDist = Math.min(dist, maxDistance);
+  const angle = Math.atan2(dy, dx);
+
+  // normalized movement direction
+  const normalizedX = (clampedDist / maxDistance) * Math.cos(angle);
+  const normalizedY = (clampedDist / maxDistance) * Math.sin(angle);
+
+  // Forward/back in Y, strafe in X:
+  // Adjust signs if needed.
+  // Here, normalizedY > 0 means backward, so invert if you want Y drag down = forward
+  moveVector.set(-normalizedY, 0, normalizedX);
+});
+
+joystickArea.addEventListener("touchend", () => {
+  moveActive = false;
+  moveVector.set(0, 0, 0);
+});
 
 function handleMovement() {
   camera.getWorldDirection(forwardVector);
@@ -543,13 +614,17 @@ function handleMovement() {
   let directionX = 0;
   let directionZ = 0;
 
-  // Disable WASD if sitting
+  // Keyboard input only when not sitting
   if (!isSitting) {
     if (keys["KeyW"]) directionZ += 0.5;
     if (keys["KeyS"]) directionZ -= 0.5;
     if (keys["KeyA"]) directionX += 0.5;
     if (keys["KeyD"]) directionX -= 0.5;
   }
+
+  // Also add movement from joystick on mobile:
+  directionZ += moveVector.x; // forward/back
+  directionX += moveVector.z; // strafe
 
   // Sprint check
   if (keys["ShiftLeft"] || keys["ShiftRight"]) {
@@ -561,7 +636,9 @@ function handleMovement() {
   const moveDir = new THREE.Vector3();
   moveDir.addScaledVector(forwardVector, directionZ);
   moveDir.addScaledVector(sideVector, directionX);
-  moveDir.normalize().multiplyScalar(moveSpeed);
+  if (moveDir.length() > 0) {
+    moveDir.normalize().multiplyScalar(moveSpeed);
+  }
 
   const newPosition = player.position.clone().add(moveDir);
 
@@ -587,8 +664,6 @@ function handleMovement() {
 
 window.addEventListener("keydown", (event) => {
   keys[event.code] = true;
-
-  // Stand up if sitting and ESC or SPACE is pressed
   if ((event.code === "Escape" || event.code === "Space") && isSitting) {
     standUp();
   }
