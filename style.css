@@ -1,0 +1,72 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    ;
+    overflow: hidden;
+}
+
+canvas {
+    background-color: white;
+}
+
+#crosshair {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+#crosshair::before,
+#crosshair::after {
+    content: '';
+    position: absolute;
+    background: blueviolet;
+}
+
+#crosshair::before {
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    transform: translateX(-50%);
+}
+
+#crosshair::after {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#joystick-area,
+#look-area {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    top: 0;
+    pointer-events: auto;
+}
+
+#joystick-area {
+    left: 0;
+    /* Optional styling: background: rgba(0,0,0,0.1); */
+}
+
+#look-area {
+    right: 0;
+    /* Optional styling: background: rgba(0,0,0,0.1); */
+}
