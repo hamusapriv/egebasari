@@ -556,7 +556,7 @@ lookArea.addEventListener("touchmove", (e) => {
 
   // Fix yaw and pitch directions
   controls.getObject().rotation.y -= deltaX * lookSensitivity; // Left-right rotation
-  camera.rotation.x += deltaY * lookSensitivity; // Invert for correct up-down
+  camera.rotation.x -= deltaY * lookSensitivity; // Correct for inverted up-down
 
   // Clamp pitch to prevent flipping
   const maxPitch = Math.PI / 2 - 0.1;
