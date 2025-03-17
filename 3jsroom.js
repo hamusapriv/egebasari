@@ -404,7 +404,7 @@ function placeClassroomRows(
 
       // Create a button above the seat
       const buttonGeom = new THREE.BoxGeometry(0.1, 0.001, 0.1);
-      const buttonMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+      const buttonMat = new THREE.MeshStandardMaterial({ color: 0xf3a2d0 });
       const button = new THREE.Mesh(buttonGeom, buttonMat);
       button.position.set(xPos - 0.43, 0.81, zPos + 0.26);
       button.userData.isButton = true;
