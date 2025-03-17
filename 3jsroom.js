@@ -553,9 +553,12 @@ lookArea.addEventListener("touchmove", (e) => {
   const deltaY = touch.clientY - lookStartY;
 
   const lookSensitivity = 0.002;
-  controls.getObject().rotation.y -= deltaX * lookSensitivity;
-  camera.rotation.x -= deltaY * lookSensitivity;
 
+  // Fix yaw and pitch directions
+  controls.getObject().rotation.y -= deltaX * lookSensitivity; // Left-right rotation
+  camera.rotation.x -= deltaY * lookSensitivity; // Correct for inverted up-down
+
+  // Clamp pitch to prevent flipping
   const maxPitch = Math.PI / 2 - 0.1;
   camera.rotation.x = Math.max(
     -maxPitch,
@@ -593,10 +596,8 @@ joystickArea.addEventListener("touchmove", (e) => {
   const normalizedX = (clampedDist / maxDistance) * Math.cos(angle);
   const normalizedY = (clampedDist / maxDistance) * Math.sin(angle);
 
-  // Forward/back in Y, strafe in X:
-  // Adjust signs if needed.
-  // Here, normalizedY > 0 means backward, so invert if you want Y drag down = forward
-  moveVector.set(-normalizedY, 0, normalizedX);
+  // Fix direction inversion
+  moveVector.set(normalizedY, 0, -normalizedX);
 });
 
 joystickArea.addEventListener("touchend", () => {
