@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
-import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js"; // Import the RoundedBoxGeometry
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 
 // ----- Renderer and Tone Mapping -----
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -171,7 +171,7 @@ const rightWallMesh = createWall(
   -Math.PI / 2
 );
 
-// Ceiling
+// ----- Ceiling -----
 const ceilingGeometry = new THREE.PlaneGeometry(floorSize, floorSize);
 const ceilingMaterial = new THREE.MeshStandardMaterial({
   color: 0xffffff,
@@ -188,6 +188,8 @@ scene.add(ceilingMesh);
 const obstacles = [];
 const obstacleBoxes = [];
 
+// ----- Whiteboard Mesh & 3D Interactive UI -----
+// Create the whiteboard mesh.
 const whiteboardGeometry = new THREE.BoxGeometry(2, 1, 0.05);
 const whiteboardMesh = new THREE.Mesh(whiteboardGeometry, whiteboardMaterial);
 whiteboardMesh.position.set(0, wallHeight / 2, floorSize / 2 - 0.05);
@@ -198,9 +200,196 @@ whiteboardMesh.receiveShadow = true;
 scene.add(whiteboardMesh);
 obstacles.push(whiteboardMesh);
 
-// We'll store seat buttons in an array
-const seatButtons = [];
+// Create a UI group to attach to the whiteboard.
+const whiteboardUIGroup = new THREE.Group();
+// Position the UI slightly in front of the whiteboard.
+whiteboardUIGroup.position.set(0, 0, 0.026);
 
+// --- Create 3D Input Fields (ID and Password) ---
+function createInputField(placeholder) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000000";
+  ctx.font = "24px Arial";
+  ctx.fillText(placeholder, 10, 40);
+  const texture = new THREE.CanvasTexture(canvas);
+  const geometry = new THREE.PlaneGeometry(1.5, 0.4);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.type = "inputField";
+  mesh.userData.value = "";
+  mesh.userData.placeholder = placeholder;
+  mesh.userData.canvas = canvas;
+  mesh.userData.ctx = ctx;
+  mesh.userData.texture = texture;
+  return mesh;
+}
+const idFieldMesh = createInputField("ID");
+idFieldMesh.position.set(0, 0.6, 0);
+const passwordFieldMesh = createInputField("Password");
+passwordFieldMesh.position.set(0, 0.1, 0);
+whiteboardUIGroup.add(idFieldMesh, passwordFieldMesh);
+
+// --- Create 3D Buttons ---
+// Reuse a generic createButton function.
+function createButton(label, pos) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 128;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#dddddd";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000000";
+  ctx.font = "20px Arial";
+  ctx.fillText(label, 10, 40);
+  const texture = new THREE.CanvasTexture(canvas);
+  const geometry = new THREE.PlaneGeometry(0.7, 0.35);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.copy(pos);
+  mesh.userData.type = "button";
+  mesh.userData.label = label;
+  return mesh;
+}
+const loginButton = createButton("Login", new THREE.Vector3(0, -0.4, 0));
+whiteboardUIGroup.add(loginButton);
+
+// Create extra buttons for finishing typing.
+const enterButton = createButton("Enter", new THREE.Vector3(-0.5, -0.9, 0));
+const cancelButton = createButton("Cancel", new THREE.Vector3(0.5, -0.9, 0));
+enterButton.visible = false;
+cancelButton.visible = false;
+whiteboardUIGroup.add(enterButton, cancelButton);
+
+// Attach the UI group to the whiteboard.
+whiteboardMesh.add(whiteboardUIGroup);
+
+// Global variables for input handling.
+let activeInputField = null;
+let typingMode = false;
+
+// Raycaster for UI interaction.
+const uiRaycaster = new THREE.Raycaster();
+function onUIRaycast(event) {
+  if (!controls.isLocked) return;
+  uiRaycaster.setFromCamera(mouse, camera);
+  const intersects = uiRaycaster.intersectObjects(whiteboardUIGroup.children);
+  if (intersects.length > 0) {
+    const obj = intersects[0].object;
+    if (obj.userData.type === "inputField") {
+      activeInputField = obj;
+      typingMode = true;
+      // Show focus indicator.
+      const ctx = obj.userData.ctx;
+      ctx.strokeStyle = "#ff0000";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(
+        0,
+        0,
+        obj.userData.canvas.width,
+        obj.userData.canvas.height
+      );
+      obj.userData.texture.needsUpdate = true;
+      // Show enter/cancel buttons.
+      enterButton.visible = true;
+      cancelButton.visible = true;
+    } else if (obj.userData.type === "button") {
+      if (obj.userData.label === "Login") {
+        // Check credentials.
+        if (
+          idFieldMesh.userData.value === "student" &&
+          passwordFieldMesh.userData.value === "password123"
+        ) {
+          console.log("Login successful");
+        } else {
+          console.log("Invalid credentials");
+        }
+      } else if (obj.userData.label === "Enter") {
+        // Commit the active input field.
+        activeInputField = null;
+        typingMode = false;
+        enterButton.visible = false;
+        cancelButton.visible = false;
+      } else if (obj.userData.label === "Cancel") {
+        // Clear the active field and exit typing mode.
+        if (activeInputField) {
+          activeInputField.userData.value = "";
+          const ctx = activeInputField.userData.ctx;
+          const canvas = activeInputField.userData.canvas;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#000000";
+          ctx.font = "24px Arial";
+          ctx.fillText(activeInputField.userData.placeholder, 10, 40);
+          activeInputField.userData.texture.needsUpdate = true;
+        }
+        activeInputField = null;
+        typingMode = false;
+        enterButton.visible = false;
+        cancelButton.visible = false;
+      }
+    }
+  }
+}
+document.addEventListener(
+  "mousedown",
+  (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    onUIRaycast(event);
+  },
+  false
+);
+
+// Update active input field via keyboard.
+document.addEventListener("keydown", (e) => {
+  if (activeInputField && typingMode) {
+    // Do not use Escape to exit; instead use the Cancel button.
+    if (e.key === "Backspace") {
+      activeInputField.userData.value = activeInputField.userData.value.slice(
+        0,
+        -1
+      );
+    } else if (e.key === "Enter") {
+      // Optionally, you could treat Enter as a commit, or ignore it if you want the Enter button to be used.
+      // Here we simply exit typing mode.
+      activeInputField = null;
+      typingMode = false;
+      enterButton.visible = false;
+      cancelButton.visible = false;
+      return;
+    } else if (e.key.length === 1) {
+      activeInputField.userData.value += e.key;
+    }
+    const ctx = activeInputField.userData.ctx;
+    const canvas = activeInputField.userData.canvas;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#000000";
+    ctx.font = "24px Arial";
+    ctx.fillText(
+      activeInputField.userData.value || activeInputField.userData.placeholder,
+      10,
+      40
+    );
+    activeInputField.userData.texture.needsUpdate = true;
+  }
+});
+
+// ----- Desks, Chairs, and Other Classroom Objects -----
+const seatButtons = [];
 function createDesk() {
   const desk = new THREE.Group();
   const deskWidth = 1.0;
@@ -228,7 +417,6 @@ function createDesk() {
 
   const legWidth = 0.05;
   const legDepth = 0.05;
-
   function createLeg(x, z) {
     const legGeom = new RoundedBoxGeometry(
       legWidth,
@@ -243,7 +431,6 @@ function createDesk() {
     leg.receiveShadow = true;
     return leg;
   }
-
   desk.add(
     createLeg(-deskWidth / 2 + legWidth / 2, deskDepth / 2 - legDepth / 2),
     createLeg(deskWidth / 2 - legWidth / 2, deskDepth / 2 - legDepth / 2),
@@ -267,7 +454,6 @@ function createDesk() {
   const basketWidth = deskWidth * 0.95;
   const basketDepth = deskDepth * 0.95;
   const basketFrameThickness = 0.01;
-
   function createBar(width, height, depth) {
     const barGeom = new RoundedBoxGeometry(width, height, depth, 4, 0.002);
     const bar = new THREE.Mesh(barGeom, metalMaterial);
@@ -275,7 +461,6 @@ function createDesk() {
     bar.receiveShadow = true;
     return bar;
   }
-
   const basketGroup = new THREE.Group();
   const basketFront = createBar(
     basketWidth,
@@ -294,7 +479,6 @@ function createDesk() {
   const basketRight = basketLeft.clone();
   basketRight.position.x = basketWidth / 2;
   basketGroup.add(basketFront, basketBack, basketLeft, basketRight);
-
   const wireCount = 6;
   for (let i = 1; i < wireCount; i++) {
     const spacing = basketWidth / wireCount;
@@ -306,10 +490,8 @@ function createDesk() {
     wire.position.x = -basketWidth / 2 + spacing * i;
     basketGroup.add(wire);
   }
-
   basketGroup.position.y = deskHeight - 0.2;
   desk.add(basketGroup);
-
   desk.userData.isObstacle = true;
   return desk;
 }
@@ -319,7 +501,6 @@ function createChair() {
   const seatWidth = 0.4;
   const seatDepth = 0.4;
   const seatHeight = 0.03;
-
   const seatGeom = new RoundedBoxGeometry(
     seatWidth,
     seatHeight,
@@ -332,7 +513,6 @@ function createChair() {
   seat.castShadow = true;
   seat.receiveShadow = true;
   chair.add(seat);
-
   const backrestHeight = 0.5;
   const backrestThickness = 0.02;
   const backrestGeom = new RoundedBoxGeometry(
@@ -348,9 +528,7 @@ function createChair() {
   backrest.castShadow = true;
   backrest.receiveShadow = true;
   chair.add(backrest);
-
   const chairLegHeight = 0.35;
-
   function createLeg(x, z) {
     const legGeom = new RoundedBoxGeometry(
       0.02,
@@ -365,14 +543,12 @@ function createChair() {
     leg.receiveShadow = true;
     return leg;
   }
-
   chair.add(
     createLeg(-seatWidth / 2 + 0.02, seatDepth / 2 - 0.02),
     createLeg(seatWidth / 2 - 0.02, seatDepth / 2 - 0.02),
     createLeg(-seatWidth / 2 + 0.02, -seatDepth / 2 + 0.02),
     createLeg(seatWidth / 2 - 0.02, -seatDepth / 2 + 0.02)
   );
-
   chair.userData.isObstacle = true;
   return chair;
 }
@@ -394,15 +570,12 @@ function placeClassroomRows(
       const ch = createChair();
       const xPos = (c - (cols - 1) / 2) * spacingX * 1.3;
       const zPos = startZ - r * spacingZ + 2;
-
       d.position.set(xPos, 0.05, zPos + 0.5);
       ch.position.set(xPos, 0.05, zPos);
-
       scene.add(d);
       scene.add(ch);
       obstacles.push(d, ch);
-
-      // Create a button above the seat
+      // Create a seat button (if needed)
       const buttonGeom = new THREE.BoxGeometry(0.1, 0.001, 0.1);
       const buttonMat = new THREE.MeshStandardMaterial({ color: 0xf3a2d0 });
       const button = new THREE.Mesh(buttonGeom, buttonMat);
@@ -418,7 +591,6 @@ function placeClassroomRows(
 
 const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
-
 placeClassroomRows(3, 2, -1.5, 1.6, 1.2);
 
 const posterTexture = textureLoader.load("assets/world-map.jpg");
@@ -444,10 +616,9 @@ obstacles.forEach((obj) => {
   obstacleBoxes.push(box);
 });
 
-// User Movement
+// ----- User Movement -----
 const player = new THREE.Object3D();
 scene.add(player);
-
 const normalSpeed = 0.01;
 const sprintSpeed = 0.03;
 let moveSpeed = normalSpeed;
@@ -469,7 +640,6 @@ function checkCollisions(newPosition) {
     new THREE.Vector3(newPosition.x, newPosition.y + 0.75, newPosition.z),
     new THREE.Vector3(0.4, 1.5, 0.4)
   );
-
   for (const box of obstacleBoxes) {
     if (tempBox.intersectsBox(box)) {
       return true;
@@ -478,32 +648,28 @@ function checkCollisions(newPosition) {
   return false;
 }
 
-// Pointer Lock (still works on desktop)
+// ----- Pointer Lock -----
 const controls = new PointerLockControls(camera, document.body);
 document.body.addEventListener("click", () => {
   controls.lock();
 });
 
-// Raycasting for buttons
+// Raycasting for seat buttons (UI is entirely 3D)
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-
 function onMouseDown(event) {
   if (!controls.isLocked) return;
-
-  mouse.x = 0;
-  mouse.y = 0;
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(seatButtons, true);
+  const intersects = raycaster.intersectObjects([...seatButtons]);
   if (intersects.length > 0) {
-    const button = intersects[0].object;
-    if (button.userData.isButton) {
-      sitDown(button.userData.seatPos, button.userData.lookAtPos);
+    const obj = intersects[0].object;
+    if (obj.userData.isButton) {
+      sitDown(obj.userData.seatPos, obj.userData.lookAtPos);
     }
   }
 }
-
 document.addEventListener("mousedown", onMouseDown, false);
 
 function sitDown(seatPos, lookAtPos) {
@@ -520,133 +686,118 @@ function standUp() {
   isSitting = false;
 }
 
-// Movement direction vectors
-const forwardVector = new THREE.Vector3();
-const sideVector = new THREE.Vector3();
+// ----- Mobile Controls & Rotation Disk -----
+// Use arrow buttons for movement.
+const mobileControls = {
+  move: { up: false, down: false, left: false, right: false },
+};
 
-// MOBILE: Variables for touch controls
-let lookActive = false;
-let lookStartX = 0;
-let lookStartY = 0;
-
-let moveActive = false;
-let moveStartX = 0;
-let moveStartY = 0;
-let moveVector = new THREE.Vector3();
-
-// MOBILE: Touch areas
-const lookArea = document.getElementById("look-area");
-const joystickArea = document.getElementById("joystick-area");
-
-// MOBILE: Camera look handling
-lookArea.addEventListener("touchstart", (e) => {
-  const touch = e.touches[0];
-  lookStartX = touch.clientX;
-  lookStartY = touch.clientY;
-  lookActive = true;
-});
-
-lookArea.addEventListener("touchmove", (e) => {
-  if (!lookActive) return;
-  const touch = e.touches[0];
-  const deltaX = touch.clientX - lookStartX;
-  const deltaY = touch.clientY - lookStartY;
-
-  const lookSensitivity = 0.002;
-
-  // Fix yaw and pitch directions
-  controls.getObject().rotation.y -= deltaX * lookSensitivity; // Left-right rotation
-  camera.rotation.x -= deltaY * lookSensitivity; // Correct for inverted up-down
-
-  // Clamp pitch to prevent flipping
-  const maxPitch = Math.PI / 2 - 0.1;
-  camera.rotation.x = Math.max(
-    -maxPitch,
-    Math.min(maxPitch, camera.rotation.x)
+function addMobileButtonEvents(id, direction) {
+  const btn = document.getElementById(id);
+  btn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    mobileControls.move[direction] = true;
+  });
+  btn.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    mobileControls.move[direction] = false;
+  });
+  btn.addEventListener(
+    "mousedown",
+    () => (mobileControls.move[direction] = true)
   );
+  btn.addEventListener(
+    "mouseup",
+    () => (mobileControls.move[direction] = false)
+  );
+}
+addMobileButtonEvents("move-up", "up");
+addMobileButtonEvents("move-down", "down");
+addMobileButtonEvents("move-left", "left");
+addMobileButtonEvents("move-right", "right");
 
-  lookStartX = touch.clientX;
-  lookStartY = touch.clientY;
-});
+// Improved rotation disk handling using stored initial yaw/pitch.
+let rotationStart = {
+  x: 0,
+  y: 0,
+  initialYaw: 0,
+  initialPitch: 0,
+  active: false,
+};
+const rotationDisk = document.getElementById("rotation-disk");
 
-lookArea.addEventListener("touchend", () => {
-  lookActive = false;
-});
-
-// MOBILE: Movement (joystick) handling
-joystickArea.addEventListener("touchstart", (e) => {
+rotationDisk.addEventListener("touchstart", (e) => {
+  e.preventDefault();
   const touch = e.touches[0];
-  moveStartX = touch.clientX;
-  moveStartY = touch.clientY;
-  moveActive = true;
+  rotationStart.x = touch.clientX;
+  rotationStart.y = touch.clientY;
+  rotationStart.initialYaw = controls.object.rotation.y;
+  rotationStart.initialPitch = camera.rotation.x; // store current pitch
+  rotationStart.active = true;
 });
 
-joystickArea.addEventListener("touchmove", (e) => {
-  if (!moveActive) return;
+rotationDisk.addEventListener("touchmove", (e) => {
+  if (!rotationStart.active) return;
+  e.preventDefault();
   const touch = e.touches[0];
-  const dx = touch.clientX - moveStartX;
-  const dy = touch.clientY - moveStartY;
-
-  const maxDistance = 50;
-  const dist = Math.sqrt(dx * dx + dy * dy);
-  const clampedDist = Math.min(dist, maxDistance);
-  const angle = Math.atan2(dy, dx);
-
-  // normalized movement direction
-  const normalizedX = (clampedDist / maxDistance) * Math.cos(angle);
-  const normalizedY = (clampedDist / maxDistance) * Math.sin(angle);
-
-  // Fix direction inversion
-  moveVector.set(normalizedY, 0, -normalizedX);
+  const deltaX = touch.clientX - rotationStart.x;
+  const deltaY = touch.clientY - rotationStart.y;
+  const sensitivity = 0.005;
+  // Update yaw relative to the initial stored yaw.
+  controls.object.rotation.y = rotationStart.initialYaw - deltaX * sensitivity;
+  // Update pitch relative to the stored initial pitch.
+  let newPitch = rotationStart.initialPitch - deltaY * sensitivity;
+  // Clamp the pitch between roughly -80° and 80°.
+  newPitch = THREE.MathUtils.clamp(
+    newPitch,
+    (-3 * Math.PI) / 2 + 0.1,
+    (3 * Math.PI) / 2 - 0.1
+  );
+  camera.rotation.x = newPitch;
 });
 
-joystickArea.addEventListener("touchend", () => {
-  moveActive = false;
-  moveVector.set(0, 0, 0);
+rotationDisk.addEventListener("touchend", () => {
+  rotationStart.active = false;
 });
 
+// Disable movement while typing.
 function handleMovement() {
+  if (typingMode) return;
+  const forwardVector = new THREE.Vector3();
+  const sideVector = new THREE.Vector3();
   camera.getWorldDirection(forwardVector);
   forwardVector.y = 0;
   forwardVector.normalize();
-
   sideVector.crossVectors(camera.up, forwardVector).normalize();
 
   let directionX = 0;
   let directionZ = 0;
-
-  // Keyboard input only when not sitting
   if (!isSitting) {
     if (keys["KeyW"]) directionZ += 0.5;
     if (keys["KeyS"]) directionZ -= 0.5;
     if (keys["KeyA"]) directionX += 0.5;
     if (keys["KeyD"]) directionX -= 0.5;
   }
+  if (mobileControls.move.up) directionZ += 0.5;
+  if (mobileControls.move.down) directionZ -= 0.5;
+  if (mobileControls.move.left) directionX += 0.5;
+  if (mobileControls.move.right) directionX -= 0.5;
 
-  // Also add movement from joystick on mobile:
-  directionZ += moveVector.x; // forward/back
-  directionX += moveVector.z; // strafe
-
-  // Sprint check
   if (keys["ShiftLeft"] || keys["ShiftRight"]) {
     moveSpeed = sprintSpeed;
   } else {
     moveSpeed = normalSpeed;
   }
-
   const moveDir = new THREE.Vector3();
   moveDir.addScaledVector(forwardVector, directionZ);
   moveDir.addScaledVector(sideVector, directionX);
   if (moveDir.length() > 0) {
     moveDir.normalize().multiplyScalar(moveSpeed);
   }
-
   const newPosition = player.position.clone().add(moveDir);
-
   if (!checkCollisions(newPosition)) {
     player.position.copy(newPosition);
   }
-
   const halfFloor = floorSize / 2;
   player.position.x = Math.min(
     Math.max(player.position.x, -halfFloor + 0.2),
@@ -656,7 +807,6 @@ function handleMovement() {
     Math.max(player.position.z, -halfFloor + 0.2),
     halfFloor - 0.2
   );
-
   player.position.y = 0;
   camera.position.copy(
     player.position.clone().add(new THREE.Vector3(0, 1.2, 0))
@@ -664,12 +814,13 @@ function handleMovement() {
 }
 
 window.addEventListener("keydown", (event) => {
+  // While typing, ignore movement key events.
+  if (typingMode) return;
   keys[event.code] = true;
   if ((event.code === "Escape" || event.code === "Space") && isSitting) {
     standUp();
   }
 });
-
 window.addEventListener("keyup", (event) => {
   keys[event.code] = false;
 });
@@ -682,7 +833,6 @@ function animate() {
 }
 animate();
 
-// ----- Handle Resize -----
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();

@@ -19,11 +19,18 @@
 
   <body>
     <div id="crosshair"></div>
-    <!-- Overlay for touch controls -->
-    <div id="overlay">
-      <div id="joystick-area"></div>
-      <div id="look-area"></div>
+
+    <!-- Mobile Controls Overlay (for movement and view rotation) -->
+    <div id="mobile-controls">
+      <div id="rotation-disk"></div>
+      <div id="move-controls">
+        <button id="move-up">↑</button>
+        <button id="move-left">←</button>
+        <button id="move-down">↓</button>
+        <button id="move-right">→</button>
+      </div>
     </div>
+
     <script type="module" src="3jsroom.js"></script>
   </body>
 </html>
