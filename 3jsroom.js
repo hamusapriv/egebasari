@@ -2,6 +2,196 @@ import * as THREE from "three";
 import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 
+// -----------------------
+// Global UI State Variables
+// -----------------------
+let currentUIState = "login"; // "login" or "quiz"
+let idFieldMesh, passwordFieldMesh, loginButton, cancelButton;
+let activeInputField = null;
+let typingMode = false;
+
+// -----------------------
+// Utility Functions
+// -----------------------
+
+// Creates a text label mesh using a canvas texture.
+function createTextLabel(text, width = 1, height = 0.2) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 128;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000000";
+  ctx.font = "48px Arial";
+  ctx.fillText(text, 10, 64);
+  const texture = new THREE.CanvasTexture(canvas);
+  const geometry = new THREE.PlaneGeometry(width, height);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    transparent: true,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.type = "textLabel";
+  mesh.userData.text = text;
+  return mesh;
+}
+
+// -----------------------
+// UI Creation Functions
+// -----------------------
+
+// Login UI: input fields (ID and Password) + Login and Cancel buttons.
+function showLoginUI() {
+  // Clear the UI group.
+  while (whiteboardUIGroup.children.length > 0) {
+    whiteboardUIGroup.remove(whiteboardUIGroup.children[0]);
+  }
+  activeInputField = null;
+  typingMode = false;
+
+  // Create input fields.
+  idFieldMesh = createInputField("ID");
+  passwordFieldMesh = createInputField("Password");
+  idFieldMesh.position.set(-0.7, 0.4, 0.05);
+  passwordFieldMesh.position.set(-0.7, 0.25, 0.05);
+  whiteboardUIGroup.add(idFieldMesh, passwordFieldMesh);
+
+  // Create Login and Cancel buttons.
+  loginButton = createButton("Login", new THREE.Vector3(-0.8, 0.1, 0.05));
+  cancelButton = createButton("Cancel", new THREE.Vector3(-0.5, 0.1, 0.05));
+  cancelButton.visible = false;
+  whiteboardUIGroup.add(loginButton, cancelButton);
+}
+
+// Quiz UI: a welcome message, a quiz question with answer buttons, and a logout button.
+function showQuizUI(studentName) {
+  while (whiteboardUIGroup.children.length > 0) {
+    whiteboardUIGroup.remove(whiteboardUIGroup.children[0]);
+  }
+  // Welcome message.
+  const welcomeText = createTextLabel(
+    "Welcome, " + studentName + ".",
+    1.8,
+    0.3
+  );
+  welcomeText.position.set(-0.7, 0.4, 0.05);
+  whiteboardUIGroup.add(welcomeText);
+
+  // Quiz question.
+  const quizQuestion = createTextLabel("What is 2 + 2?", 1.8, 0.3);
+  quizQuestion.position.set(-0.7, 0.1, 0.05);
+  whiteboardUIGroup.add(quizQuestion);
+
+  // Quiz answer buttons.
+  const option1 = createButton("3", new THREE.Vector3(-0.8, -0.1, 0.05));
+  option1.userData.type = "quizOption";
+  option1.userData.correct = false;
+
+  const option2 = createButton("4", new THREE.Vector3(-0.4, -0.1, 0.05));
+  option2.userData.type = "quizOption";
+  option2.userData.correct = true;
+
+  const option3 = createButton("5", new THREE.Vector3(0.0, -0.1, 0.05));
+  option3.userData.type = "quizOption";
+  option3.userData.correct = false;
+
+  const option4 = createButton("6", new THREE.Vector3(0.4, -0.1, 0.05));
+  option4.userData.type = "quizOption";
+  option4.userData.correct = false;
+
+  whiteboardUIGroup.add(option1, option2, option3, option4);
+
+  // Logout button.
+  const logoutButton = createButton(
+    "Logout",
+    new THREE.Vector3(0.6, -0.3, 0.05)
+  );
+  logoutButton.userData.type = "logout";
+  whiteboardUIGroup.add(logoutButton);
+}
+
+// -----------------------
+// Core UI Elements (Inputs & Buttons)
+// -----------------------
+
+// Create a 3D input field using a canvas texture.
+function createInputField(placeholder) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000000";
+  ctx.font = "24px Arial";
+  ctx.fillText(placeholder, 10, 40);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  const geometry = new THREE.BoxGeometry(0.4, 0.1, 0.01);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.type = "inputField";
+  mesh.userData.value = "";
+  mesh.userData.placeholder = placeholder;
+  mesh.userData.canvas = canvas;
+  mesh.userData.ctx = ctx;
+  mesh.userData.texture = texture;
+  return mesh;
+}
+
+// Create a 3D button.
+function createButton(label, pos) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 128;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#dddddd";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000000";
+  ctx.font = "20px Arial";
+  ctx.fillText(label, 10, 40);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  const geometry = new THREE.BoxGeometry(0.2, 0.075, 0.01);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.copy(pos);
+  mesh.userData.type = "button";
+  mesh.userData.label = label;
+  return mesh;
+}
+
+// Update appearance for an input field.
+function updateInputFieldAppearance(field, focused) {
+  const ctx = field.userData.ctx;
+  const canvas = field.userData.canvas;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000000";
+  ctx.font = "24px Arial";
+  ctx.fillText(field.userData.value || field.userData.placeholder, 10, 40);
+  if (focused) {
+    ctx.strokeStyle = "#ff0000";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+  }
+  field.userData.texture.needsUpdate = true;
+}
+
+// -----------------------
+// Three.js Basic Setup
+// -----------------------
+
 // ----- Renderer and Tone Mapping -----
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -25,6 +215,18 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 0, -10);
 camera.lookAt(0, 0.75, 0);
+
+// ----- Pointer Lock Controls -----
+const controls = new PointerLockControls(camera, document.body);
+
+// Single click: if not locked, lock pointer; otherwise trigger UI raycast.
+document.body.addEventListener("click", () => {
+  if (!controls.isLocked) {
+    controls.lock();
+  } else {
+    handleCenterRaycast();
+  }
+});
 
 // ----- Lights -----
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -54,7 +256,7 @@ for (let r = 0; r < rows; r++) {
   }
 }
 
-// ----- Dimensions -----
+// ----- Dimensions & Textures -----
 const floorSize = 6;
 const wallWidth = 6;
 const wallHeight = 2;
@@ -188,8 +390,7 @@ scene.add(ceilingMesh);
 const obstacles = [];
 const obstacleBoxes = [];
 
-// ----- Whiteboard Mesh & 3D Interactive UI -----
-// Create the whiteboard mesh.
+// ----- Whiteboard Mesh & UI Group -----
 const whiteboardGeometry = new THREE.BoxGeometry(2, 1, 0.05);
 const whiteboardMesh = new THREE.Mesh(whiteboardGeometry, whiteboardMaterial);
 whiteboardMesh.position.set(0, wallHeight / 2, floorSize / 2 - 0.05);
@@ -200,196 +401,113 @@ whiteboardMesh.receiveShadow = true;
 scene.add(whiteboardMesh);
 obstacles.push(whiteboardMesh);
 
-// Create a UI group to attach to the whiteboard.
+// Create a group to hold our UI elements on the whiteboard.
 const whiteboardUIGroup = new THREE.Group();
-// Position the UI slightly in front of the whiteboard.
 whiteboardUIGroup.position.set(0, 0, 0.026);
-
-// --- Create 3D Input Fields (ID and Password) ---
-function createInputField(placeholder) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 64;
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#000000";
-  ctx.font = "24px Arial";
-  ctx.fillText(placeholder, 10, 40);
-  const texture = new THREE.CanvasTexture(canvas);
-  const geometry = new THREE.PlaneGeometry(1.5, 0.4);
-  const material = new THREE.MeshBasicMaterial({
-    map: texture,
-    side: THREE.DoubleSide,
-  });
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.userData.type = "inputField";
-  mesh.userData.value = "";
-  mesh.userData.placeholder = placeholder;
-  mesh.userData.canvas = canvas;
-  mesh.userData.ctx = ctx;
-  mesh.userData.texture = texture;
-  return mesh;
-}
-const idFieldMesh = createInputField("ID");
-idFieldMesh.position.set(0, 0.6, 0);
-const passwordFieldMesh = createInputField("Password");
-passwordFieldMesh.position.set(0, 0.1, 0);
-whiteboardUIGroup.add(idFieldMesh, passwordFieldMesh);
-
-// --- Create 3D Buttons ---
-// Reuse a generic createButton function.
-function createButton(label, pos) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 128;
-  canvas.height = 64;
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#dddddd";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#000000";
-  ctx.font = "20px Arial";
-  ctx.fillText(label, 10, 40);
-  const texture = new THREE.CanvasTexture(canvas);
-  const geometry = new THREE.PlaneGeometry(0.7, 0.35);
-  const material = new THREE.MeshBasicMaterial({
-    map: texture,
-    side: THREE.DoubleSide,
-  });
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.copy(pos);
-  mesh.userData.type = "button";
-  mesh.userData.label = label;
-  return mesh;
-}
-const loginButton = createButton("Login", new THREE.Vector3(0, -0.4, 0));
-whiteboardUIGroup.add(loginButton);
-
-// Create extra buttons for finishing typing.
-const enterButton = createButton("Enter", new THREE.Vector3(-0.5, -0.9, 0));
-const cancelButton = createButton("Cancel", new THREE.Vector3(0.5, -0.9, 0));
-enterButton.visible = false;
-cancelButton.visible = false;
-whiteboardUIGroup.add(enterButton, cancelButton);
-
-// Attach the UI group to the whiteboard.
 whiteboardMesh.add(whiteboardUIGroup);
 
-// Global variables for input handling.
-let activeInputField = null;
-let typingMode = false;
+// Initially show login UI.
+showLoginUI();
 
-// Raycaster for UI interaction.
-const uiRaycaster = new THREE.Raycaster();
-function onUIRaycast(event) {
-  if (!controls.isLocked) return;
-  uiRaycaster.setFromCamera(mouse, camera);
-  const intersects = uiRaycaster.intersectObjects(whiteboardUIGroup.children);
+// -----------------------
+// Raycasting for UI and Seat Buttons
+// -----------------------
+const centerRaycaster = new THREE.Raycaster();
+const seatButtons = []; // already used for desk/chair seats
+
+function handleCenterRaycast() {
+  // Always cast from screen center.
+  centerRaycaster.setFromCamera({ x: 0, y: 0 }, camera);
+  const allTargets = [...seatButtons, ...whiteboardUIGroup.children];
+  const intersects = centerRaycaster.intersectObjects(allTargets);
   if (intersects.length > 0) {
     const obj = intersects[0].object;
-    if (obj.userData.type === "inputField") {
-      activeInputField = obj;
-      typingMode = true;
-      // Show focus indicator.
-      const ctx = obj.userData.ctx;
-      ctx.strokeStyle = "#ff0000";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(
-        0,
-        0,
-        obj.userData.canvas.width,
-        obj.userData.canvas.height
-      );
-      obj.userData.texture.needsUpdate = true;
-      // Show enter/cancel buttons.
-      enterButton.visible = true;
-      cancelButton.visible = true;
-    } else if (obj.userData.type === "button") {
-      if (obj.userData.label === "Login") {
-        // Check credentials.
-        if (
-          idFieldMesh.userData.value === "student" &&
-          passwordFieldMesh.userData.value === "password123"
-        ) {
-          console.log("Login successful");
+
+    // Check for seat button (if applicable).
+    if (obj.userData.isButton && obj.userData.seatPos) {
+      sitDown(obj.userData.seatPos, obj.userData.lookAtPos);
+      return;
+    }
+
+    if (currentUIState === "login") {
+      // Handle login UI interactions.
+      if (obj.userData.type === "inputField") {
+        if (activeInputField && activeInputField !== obj) {
+          updateInputFieldAppearance(activeInputField, false);
+        }
+        activeInputField = obj;
+        typingMode = true;
+        updateInputFieldAppearance(obj, true);
+        cancelButton.visible = true;
+        return;
+      }
+      if (obj.userData.type === "button") {
+        if (obj.userData.label === "Login") {
+          if (
+            idFieldMesh.userData.value === "student" &&
+            passwordFieldMesh.userData.value === "password123"
+          ) {
+            console.log("Login successful");
+            showQuizUI(idFieldMesh.userData.value);
+            currentUIState = "quiz";
+          } else {
+            console.log("Invalid credentials");
+          }
+          return;
+        } else if (obj.userData.label === "Cancel") {
+          if (activeInputField) {
+            activeInputField.userData.value = "";
+            updateInputFieldAppearance(activeInputField, false);
+          }
+          activeInputField = null;
+          typingMode = false;
+          cancelButton.visible = false;
+          return;
+        }
+      }
+    } else if (currentUIState === "quiz") {
+      // Handle quiz UI interactions.
+      if (obj.userData.type === "quizOption") {
+        if (obj.userData.correct) {
+          console.log("Correct answer!");
         } else {
-          console.log("Invalid credentials");
+          console.log("Incorrect answer!");
         }
-      } else if (obj.userData.label === "Enter") {
-        // Commit the active input field.
-        activeInputField = null;
-        typingMode = false;
-        enterButton.visible = false;
-        cancelButton.visible = false;
-      } else if (obj.userData.label === "Cancel") {
-        // Clear the active field and exit typing mode.
-        if (activeInputField) {
-          activeInputField.userData.value = "";
-          const ctx = activeInputField.userData.ctx;
-          const canvas = activeInputField.userData.canvas;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#000000";
-          ctx.font = "24px Arial";
-          ctx.fillText(activeInputField.userData.placeholder, 10, 40);
-          activeInputField.userData.texture.needsUpdate = true;
-        }
-        activeInputField = null;
-        typingMode = false;
-        enterButton.visible = false;
-        cancelButton.visible = false;
+        return;
+      }
+      if (obj.userData.type === "logout") {
+        showLoginUI();
+        currentUIState = "login";
+        return;
       }
     }
   }
 }
-document.addEventListener(
-  "mousedown",
-  (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    onUIRaycast(event);
-  },
-  false
-);
 
 // Update active input field via keyboard.
 document.addEventListener("keydown", (e) => {
   if (activeInputField && typingMode) {
-    // Do not use Escape to exit; instead use the Cancel button.
     if (e.key === "Backspace") {
       activeInputField.userData.value = activeInputField.userData.value.slice(
         0,
         -1
       );
     } else if (e.key === "Enter") {
-      // Optionally, you could treat Enter as a commit, or ignore it if you want the Enter button to be used.
-      // Here we simply exit typing mode.
+      updateInputFieldAppearance(activeInputField, false);
       activeInputField = null;
       typingMode = false;
-      enterButton.visible = false;
       cancelButton.visible = false;
       return;
     } else if (e.key.length === 1) {
       activeInputField.userData.value += e.key;
     }
-    const ctx = activeInputField.userData.ctx;
-    const canvas = activeInputField.userData.canvas;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#000000";
-    ctx.font = "24px Arial";
-    ctx.fillText(
-      activeInputField.userData.value || activeInputField.userData.placeholder,
-      10,
-      40
-    );
-    activeInputField.userData.texture.needsUpdate = true;
+    updateInputFieldAppearance(activeInputField, true);
   }
 });
 
-// ----- Desks, Chairs, and Other Classroom Objects -----
-const seatButtons = [];
+// -----------------------
+// Desks, Chairs, and Other Classroom Objects
+// -----------------------
 function createDesk() {
   const desk = new THREE.Group();
   const deskWidth = 1.0;
@@ -492,6 +610,7 @@ function createDesk() {
   }
   basketGroup.position.y = deskHeight - 0.2;
   desk.add(basketGroup);
+
   desk.userData.isObstacle = true;
   return desk;
 }
@@ -575,7 +694,7 @@ function placeClassroomRows(
       scene.add(d);
       scene.add(ch);
       obstacles.push(d, ch);
-      // Create a seat button (if needed)
+      // Create a seat button.
       const buttonGeom = new THREE.BoxGeometry(0.1, 0.001, 0.1);
       const buttonMat = new THREE.MeshStandardMaterial({ color: 0xf3a2d0 });
       const button = new THREE.Mesh(buttonGeom, buttonMat);
@@ -616,7 +735,9 @@ obstacles.forEach((obj) => {
   obstacleBoxes.push(box);
 });
 
-// ----- User Movement -----
+// -----------------------
+// User Movement
+// -----------------------
 const player = new THREE.Object3D();
 scene.add(player);
 const normalSpeed = 0.01;
@@ -648,30 +769,6 @@ function checkCollisions(newPosition) {
   return false;
 }
 
-// ----- Pointer Lock -----
-const controls = new PointerLockControls(camera, document.body);
-document.body.addEventListener("click", () => {
-  controls.lock();
-});
-
-// Raycasting for seat buttons (UI is entirely 3D)
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-function onMouseDown(event) {
-  if (!controls.isLocked) return;
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects([...seatButtons]);
-  if (intersects.length > 0) {
-    const obj = intersects[0].object;
-    if (obj.userData.isButton) {
-      sitDown(obj.userData.seatPos, obj.userData.lookAtPos);
-    }
-  }
-}
-document.addEventListener("mousedown", onMouseDown, false);
-
 function sitDown(seatPos, lookAtPos) {
   originalPosition.copy(player.position);
   originalRotation.copy(camera.rotation);
@@ -686,8 +783,9 @@ function standUp() {
   isSitting = false;
 }
 
-// ----- Mobile Controls & Rotation Disk -----
-// Use arrow buttons for movement.
+// -----------------------
+// Mobile Controls & Rotation Disk
+// -----------------------
 const mobileControls = {
   move: { up: false, down: false, left: false, right: false },
 };
@@ -716,7 +814,6 @@ addMobileButtonEvents("move-down", "down");
 addMobileButtonEvents("move-left", "left");
 addMobileButtonEvents("move-right", "right");
 
-// Improved rotation disk handling using stored initial yaw/pitch.
 let rotationStart = {
   x: 0,
   y: 0,
@@ -732,7 +829,7 @@ rotationDisk.addEventListener("touchstart", (e) => {
   rotationStart.x = touch.clientX;
   rotationStart.y = touch.clientY;
   rotationStart.initialYaw = controls.object.rotation.y;
-  rotationStart.initialPitch = camera.rotation.x; // store current pitch
+  rotationStart.initialPitch = camera.rotation.x;
   rotationStart.active = true;
 });
 
@@ -743,11 +840,8 @@ rotationDisk.addEventListener("touchmove", (e) => {
   const deltaX = touch.clientX - rotationStart.x;
   const deltaY = touch.clientY - rotationStart.y;
   const sensitivity = 0.005;
-  // Update yaw relative to the initial stored yaw.
   controls.object.rotation.y = rotationStart.initialYaw - deltaX * sensitivity;
-  // Update pitch relative to the stored initial pitch.
   let newPitch = rotationStart.initialPitch - deltaY * sensitivity;
-  // Clamp the pitch between roughly -80° and 80°.
   newPitch = THREE.MathUtils.clamp(
     newPitch,
     (-3 * Math.PI) / 2 + 0.1,
@@ -760,7 +854,9 @@ rotationDisk.addEventListener("touchend", () => {
   rotationStart.active = false;
 });
 
-// Disable movement while typing.
+// -----------------------
+// Movement Handling & Animation Loop
+// -----------------------
 function handleMovement() {
   if (typingMode) return;
   const forwardVector = new THREE.Vector3();
@@ -783,17 +879,15 @@ function handleMovement() {
   if (mobileControls.move.left) directionX += 0.5;
   if (mobileControls.move.right) directionX -= 0.5;
 
-  if (keys["ShiftLeft"] || keys["ShiftRight"]) {
-    moveSpeed = sprintSpeed;
-  } else {
-    moveSpeed = normalSpeed;
-  }
+  moveSpeed =
+    keys["ShiftLeft"] || keys["ShiftRight"] ? sprintSpeed : normalSpeed;
   const moveDir = new THREE.Vector3();
   moveDir.addScaledVector(forwardVector, directionZ);
   moveDir.addScaledVector(sideVector, directionX);
   if (moveDir.length() > 0) {
     moveDir.normalize().multiplyScalar(moveSpeed);
   }
+
   const newPosition = player.position.clone().add(moveDir);
   if (!checkCollisions(newPosition)) {
     player.position.copy(newPosition);
@@ -814,7 +908,6 @@ function handleMovement() {
 }
 
 window.addEventListener("keydown", (event) => {
-  // While typing, ignore movement key events.
   if (typingMode) return;
   keys[event.code] = true;
   if ((event.code === "Escape" || event.code === "Space") && isSitting) {
@@ -825,7 +918,6 @@ window.addEventListener("keyup", (event) => {
   keys[event.code] = false;
 });
 
-// ----- Animation Loop -----
 function animate() {
   requestAnimationFrame(animate);
   handleMovement();
