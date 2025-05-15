@@ -1,0 +1,31 @@
+/* Card.module.css */
+.card {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: var(--sp-m);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.card__header {
+  margin-bottom: var(--sp-s);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.card__body {
+  margin-bottom: var(--sp-s);
+  font-size: 1rem;
+  line-height: var(--line-height-base);
+}
+
+.card__footer {
+  text-align: right;
+}

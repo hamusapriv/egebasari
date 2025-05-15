@@ -1,0 +1,6 @@
+/* Grid.module.css */
+.grid {
+  display: grid;
+  gap: var(--sp-m);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}

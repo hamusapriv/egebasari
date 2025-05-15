@@ -1,0 +1,30 @@
+/* Navbar.module.css */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-s) var(--sp-m);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar__brand {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.navbar__links {
+  display: flex;
+  gap: var(--sp-m);
+}
+
+.navbar__link {
+  color: var(--color-text);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navbar__link:hover {
+  color: var(--color-primary);
+}

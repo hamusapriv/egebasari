@@ -1,0 +1,16 @@
+/* 1. Reset & Base */
+@import "./styles/base/_reset.css";
+@import "./styles/base/_variables.css";
+@import "./styles/base/_typography.css";
+@import "./styles/base/_utilities.css";
+
+/* 2. Global overrides (if needed) */
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* 3. We rely on CSS Modules for component & layout styling */
