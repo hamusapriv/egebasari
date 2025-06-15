@@ -5,6 +5,13 @@ body {
   overflow: hidden;
 }
 
+header {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
 canvas {
   background-color: white;
 }
