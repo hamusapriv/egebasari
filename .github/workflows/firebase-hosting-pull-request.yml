@@ -1,18 +1,17 @@
-name: Deploy to Firebase Hosting on PR
-on: pull_request
+name: CI & Deploy to Firebase
 
-permissions:
-  checks: write
-  contents: read
-  pull-requests: write
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  build_and_preview:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -25,10 +24,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Preview Deploy to Firebase Hosting
+      - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_EGEBASARI }}
           projectId: egebasari
-          channelId: preview
+          channelId: ${{ github.event_name == 'pull_request' && 'preview' || 'live' }}
