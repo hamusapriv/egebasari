@@ -1,22 +1,20 @@
     steps:
       - uses: actions/checkout@v3
 
-      # ← add these two steps
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'         # or whatever your project uses
+          node-version: '18'
 
       - name: Install dependencies
-        run: npm ci                # or `npm install` if you don't have a lockfile
+        run: npm ci
 
-      # ← now your build step will find `vite`
       - name: Build
         run: npm run build
 
-      # ... then your Firebase deploy step
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_EGEBASARI }}'
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseToken: ${{ secrets.FIREBASE_TOKEN }}
           channelId: live
