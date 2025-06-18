@@ -1,20 +1,32 @@
-steps:
-  - uses: actions/checkout@v3
+name: CI & Deploy to Firebase
 
-  - name: Setup Node.js
-    uses: actions/setup-node@v3
-    with:
-      node-version: "18"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-  - name: Install dependencies
-    run: npm ci
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
 
-  - name: Build
-    run: npm run build
+    steps:
+      - uses: actions/checkout@v3
 
-  - name: Deploy to Firebase Hosting
-    uses: FirebaseExtended/action-hosting-deploy@v0
-    with:
-      repoToken: ${{ secrets.GITHUB_TOKEN }}
-      firebaseToken: ${{ secrets.FIREBASE_TOKEN }}
-      channelId: live
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseToken: ${{ secrets.FIREBASE_TOKEN }}
+          channelId: ${{ github.event_name == 'pull_request' && 'preview' || 'live' }}
