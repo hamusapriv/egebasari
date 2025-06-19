@@ -1,43 +1,160 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============== GLOBAL STYLES ============== */
+/* This section contains global styles that apply to the entire application, including colors, fonts, btn styles, and layout. */
+/* From Uiverse.io by cssbuttons-io */
+.btn {
+  position: relative;
+  font-size: 17px;
+  text-decoration: none;
+  padding: 1em 2.5em;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 6em;
+  transition: all 0.2s;
+  border: none;
+  font-family: inherit;
+  font-weight: 500;
+  color: black;
+  background-color: white;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+}
+
+/* ============== HERO SECTION STYLES ============== */
+/* This section styles the hero section of the application, including the video background and content overlay.*/
+.hero-section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-section .hero-content {
+  display: flex;
+  flex-direction: column;
   padding: 2rem;
-  text-align: center;
-  
+  position: absolute;
+  flex: 1;
+  z-index: 1;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 3px 3px 6px #00000063;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.hero-section p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.hero-section .hero-buttons {
+  display: flex;
+  gap: 1rem;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.hero-section .hero-buttons a {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
 }
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.hero-section .hero-buttons a:hover {
+  background-color: #0056b3;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.hero-video {
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.hero-video-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to bottom,
+    var(--whity-03),
+    rgba(255, 255, 255, 0),
+    var(--whity-03)
+  );
+}
+.hero-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.card {
-  padding: 2em;
+.shape {
+  font-family: "Baloo 2", cursive;
+  font-weight: 700;
+  box-shadow: -1px 0 1px 1px;
+  font-size: 4rem;
+  display: inline-flex;
 }
 
-.read-the-docs {
-  color: #888;
+/* –––––––––––––––––––––––––––––––––––– */
+/* 1) The “E” shape */
+.shape.E {
+  color: #012d6f;
+}
+
+/* –––––––––––––––––––––––––––––––––––– */
+/* 2) The “B” shape */
+.shape.B {
+  color: #c20000;
+}
+
+/* ============== MAIN SECTION STYLES ============== */
+/* This section styles the main content area of the application, including layout and alignment. */
+.main-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
