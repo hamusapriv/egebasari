@@ -22,8 +22,9 @@
   border: none;
   font-family: inherit;
   font-weight: 500;
-  color: black;
-  background-color: white;
+  color: var(--black-pure);
+  background-color: transparent;
+  box-shadow: 1px 1px 6px 1px;
 }
 
 .btn:hover {
@@ -56,6 +57,12 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
 }
 
 .hero-section .hero-content {
@@ -66,7 +73,7 @@
   flex: 1;
   z-index: 1;
   left: 50%;
-  top: 55%;
+  top: 50%;
   transform: translate(-50%, -50%);
   margin: auto;
   justify-content: center;
@@ -134,6 +141,7 @@
   box-shadow: -1px 0 1px 1px;
   font-size: 4rem;
   display: inline-flex;
+  padding: 0 2px 0 0;
 }
 
 /* –––––––––––––––––––––––––––––––––––– */
@@ -148,13 +156,35 @@
   color: #c20000;
 }
 
-/* ============== MAIN SECTION STYLES ============== */
+/* ============== SECTION STYLES ============== */
 /* This section styles the main content area of the application, including layout and alignment. */
-.main-section {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+
+.section-1 {
+  background-color: var(--black-pure);
+  color: var(--white-pure);
+  z-index: 1;
+}
+.section-2 {
+  background-color: var(--white-pure);
+  color: var(--black-pure);
+
+  z-index: 2;
+}
+.section-3 {
+  background-color: var(--black-pure);
+  color: var(--white-pure);
+
+  z-index: 3;
+}
+.section-4 {
+  background-color: var(--white-pure);
+  color: var(--black-pure);
+
+  z-index: 4;
+}
+
+.footer {
+  background-color: var(--black-pure);
+  color: var(--white-pure);
+  z-index: 5;
 }

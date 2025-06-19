@@ -12,15 +12,14 @@
   text-align: justify;
   line-height: 1.3;
 
-  color: rgba(0, 0, 0, 0.87);
-  background-color: var(--whity-03);
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   /* Color Variables */
+  --black-pure: #1c1c1c;
+  --white-pure: #e9e9e9;
   --black-01: rgba(0, 0, 0, 0.1);
   --black-02: rgba(0, 0, 0, 0.2);
   --black-03: rgba(0, 0, 0, 0.3);
@@ -71,6 +70,7 @@ body {
   flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
+  color: var(--black-pure);
 }
 
 video {
@@ -118,4 +118,17 @@ h5 {
 h6 {
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
+}
+
+section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
 }
