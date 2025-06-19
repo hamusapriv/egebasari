@@ -1,5 +1,6 @@
-import { useState } from "react";
-import "./Navbar.css";
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import './Navbar.css';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -14,11 +15,20 @@ function Navbar() {
         <span className="bar" />
         <span className="bar" />
       </button>
-      <ul className={`nav-menu ${open ? "open" : ""}`}>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
+      <ul className={`nav-menu ${open ? 'open' : ''}`}
+        onClick={() => setOpen(false)}>
+        <li>
+          <NavLink to="/" end>Home</NavLink>
+        </li>
+        <li>
+          <NavLink to="/about">About</NavLink>
+        </li>
+        <li>
+          <NavLink to="/services">Services</NavLink>
+        </li>
+        <li>
+          <NavLink to="/contact">Contact</NavLink>
+        </li>
       </ul>
     </nav>
   );

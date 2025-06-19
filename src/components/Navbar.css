@@ -26,6 +26,10 @@
   text-decoration: none;
 }
 
+.nav-menu li a.active {
+  text-decoration: underline;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
