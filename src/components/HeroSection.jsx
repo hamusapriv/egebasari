@@ -7,7 +7,8 @@ const HeroSection = () => {
       <div className="hero-content">
         <h1>
           <span className="shape E">E</span>ge'yi{" "}
-          <span className="shape B">B</span>aşarı'ya Taşıyoruz
+          <span className="shape B">B</span>aşarı'ya <br />
+          Taşıyoruz
         </h1>
         <p>
           Ege Başarı Kurs Merkezi olarak, Seferihisar’da her öğrencinin

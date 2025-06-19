@@ -83,6 +83,10 @@
   box-shadow: 3px 3px 6px #00000063;
 }
 
+.hero-content h1 br {
+  display: none;
+}
+
 .hero-section p {
   font-size: 1.25rem;
   margin-bottom: 2rem;
