@@ -15,7 +15,7 @@ const HeroSection = () => {
           potansiyelini ortaya çıkarmasına ve başarıya ulaşmasına yardımcı
           oluyoruz. Birebir ilgi, sıcak bir ortam ve doğru rehberlikle,
           öğrencilerimizi sadece sınavlara değil, hayata hazırlıyoruz. Çünkü
-          bizim için başarı, birlikte büyümektir.
+          bizim için başarı, birlikte büyümektir.
         </p>
         <button className="btn hero-btn">Şimdi Başvur</button>
       </div>
