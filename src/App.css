@@ -200,3 +200,23 @@
   padding: 2rem;
   white-space: normal;
 }
+.instagram-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  width: 320px;
+}
+
+.instagram-card img {
+  width: 100%;
+  display: block;
+}
+
+.instagram-card p {
+  margin: 0;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
