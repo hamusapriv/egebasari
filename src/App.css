@@ -192,3 +192,11 @@
   color: var(--white-pure);
   z-index: 5;
 }
+
+.instagram-posts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+  white-space: normal;
+}
