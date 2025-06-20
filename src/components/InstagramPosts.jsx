@@ -1,50 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-const DEFAULT_URLS = [
-  "https://www.instagram.com/reel/C_TxDk0oJBu/",
-  "https://www.instagram.com/reel/ChNVVuegi01/",
-  "https://www.instagram.com/reel/DLDRK6eIKTZ/",
-  "https://www.instagram.com/reel/DLAVHWrI9ql/",
-  "https://www.instagram.com/reel/DHT-XsaMfyy/",
-  "https://www.instagram.com/reel/C9XEKTZoeBv/",
+const INSTAGRAM_URLS = [
+  "https://www.instagram.com/reel/C_TxDk0oJBu/?utm_source=ig_embed&utm_campaign=loading",
+  "https://www.instagram.com/reel/ChNVVuegi01/?utm_source=ig_embed&utm_campaign=loading",
+  "https://www.instagram.com/reel/DLDRK6eIKTZ/?utm_source=ig_embed&utm_campaign=loading",
+  "https://www.instagram.com/reel/DLAVHWrI9ql/?utm_source=ig_embed&utm_campaign=loading",
+  "https://www.instagram.com/reel/DHT-XsaMfyy/?utm_source=ig_embed&utm_campaign=loading",
+  "https://www.instagram.com/reel/C9XEKTZoeBv/?utm_source=ig_embed&utm_campaign=loading",
 ];
 
-async function fetchPost(url) {
-  const res = await fetch(`https://r.jina.ai/${url}`);
-  const text = await res.text();
-  const imageMatch = text.match(/https:\/\/[^"']*cdninstagram[^"']*/);
-  const captionMatch = text.match(/Title: .*? on Instagram: "([^"]+)/);
-  return {
-    url,
-    image: imageMatch ? imageMatch[0] : null,
-    caption: captionMatch ? captionMatch[1] : "",
-  };
-}
+const INSTAGRAM_COMMON = {
+  version: "14",
+  captioned: true,
+  style: {
+    background: "#FFF",
+    border: 0,
+    borderRadius: "3px",
+    boxShadow: "0 0 1px rgba(0,0,0,0.5), 0 1px 10px rgba(0,0,0,0.15)",
+    margin: "1px auto",
+    maxWidth: "540px",
+    minWidth: "326px",
+    padding: 0,
+    width: "calc(100% - 2px)",
+  },
+};
 
-export default function InstagramPosts({ posts = DEFAULT_URLS }) {
-  const [data, setData] = useState([]);
-
+export default function InstagramPosts() {
   useEffect(() => {
-    async function load() {
-      const results = await Promise.all(posts.map(fetchPost));
-      setData(results);
+    const scriptId = "instagram-embed-script";
+    if (!document.getElementById(scriptId)) {
+      const s = document.createElement("script");
+      s.id = scriptId;
+      s.src = "/embed.js";
+      s.async = true;
+      document.body.appendChild(s);
+      s.onload = () => window.instgrm?.Embeds.process();
+    } else {
+      window.instgrm?.Embeds.process();
     }
-    load();
-  }, [posts]);
+  }, []); // only run once on mount
 
   return (
     <div className="instagram-posts">
-      {data.map((post, idx) => (
-        <a
-          className="instagram-card"
+      {INSTAGRAM_URLS.map((url, idx) => (
+        <blockquote
           key={idx}
-          href={post.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {post.image && <img src={post.image} alt={post.caption} />}
-          <p>{post.caption}</p>
-        </a>
+          className="instagram-media"
+          data-instgrm-captioned={INSTAGRAM_COMMON.captioned}
+          data-instgrm-permalink={url}
+          data-instgrm-version={INSTAGRAM_COMMON.version}
+          style={INSTAGRAM_COMMON.style}
+        />
       ))}
     </div>
   );
