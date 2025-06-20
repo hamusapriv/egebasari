@@ -3544,7 +3544,7 @@ try {
                 m = "instagram-embed-",
                 n = 1e4,
                 o =
-                  "\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #dbdbdb;\n  box-shadow: none;\n  display: block;\n  margin: 0;\n  min-width: 326px;\n  padding: 0;\n",
+                  "\n  background-color: #f9f9f9;\n  border-radius: 10px;\n  border: 1px solid #ccc;\n  box-shadow: 0 4px 8px rgba(0,0,0,0.1);\n  display: block;\n  margin: 1rem auto;\n  min-width: 326px;\n  padding: 1rem;\n",
                 p = /^https?:\/\//,
                 q = "https://",
                 r = /^(.*?)\/?(\?.*|#|$)/,
