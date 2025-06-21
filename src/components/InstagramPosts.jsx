@@ -1,58 +1,70 @@
-//InstagramPosts.jsx 
+//InstagramPosts.jsx
 
 import React, { useEffect } from "react";
 
 const INSTAGRAM_URLS = [
-  "https://www.instagram.com/reel/C_TxDk0oJBu/?utm_source=ig_embed&utm_campaign=loading",
-  "https://www.instagram.com/reel/ChNVVuegi01/?utm_source=ig_embed&utm_campaign=loading",
-  "https://www.instagram.com/reel/DLDRK6eIKTZ/?utm_source=ig_embed&utm_campaign=loading",
-  "https://www.instagram.com/reel/DLAVHWrI9ql/?utm_source=ig_embed&utm_campaign=loading",
-  "https://www.instagram.com/reel/DHT-XsaMfyy/?utm_source=ig_embed&utm_campaign=loading",
-  "https://www.instagram.com/reel/C9XEKTZoeBv/?utm_source=ig_embed&utm_campaign=loading",
+  "https://www.instagram.com/reel/C_TxDk0oJBu/",
+  "https://www.instagram.com/reel/ChNVVuegi01/",
+  "https://www.instagram.com/reel/DLDRK6eIKTZ/",
+  "https://www.instagram.com/reel/DLAVHWrI9ql/",
+  "https://www.instagram.com/reel/DHT-XsaMfyy/",
+  "https://www.instagram.com/reel/C9XEKTZoeBv/",
 ];
 
-const INSTAGRAM_COMMON = {
-  version: "14",
-  captioned: true,
-  style: {
-    background: "#FFF",
-    border: 0,
-    borderRadius: "3px",
-    boxShadow: "0 0 1px rgba(0,0,0,0.5), 0 1px 10px rgba(0,0,0,0.15)",
-    margin: "1px auto",
-    maxWidth: "540px",
-    minWidth: "326px",
-    padding: 0,
-    width: "calc(100% - 2px)",
+const posts = [
+  {
+    img: "/assets/post-1.jpg",
+    title: "Sabah Sürüşü",
+    text: "Güne martılar kadar özgür başlıyoruz!",
+    link: "https://www.instagram.com/reel/C_TxDk0oJBu/",
   },
-};
+  {
+    img: "/assets/post-2.jpg",
+    title: "Kıyı Rotası",
+    text: "Foça sahilinde tuzlu rüzgâr eşliğinde mola.",
+    link: "https://www.instagram.com/reel/ChNVVuegi01/",
+  },
+  {
+    img: "/assets/post-3.jpg",
+    title: "Kıyı Rotası",
+    text: "Foça sahilinde tuzlu rüzgâr eşliğinde mola.",
+    link: "https://www.instagram.com/reel/DLDRK6eIKTZ/",
+  },
+  {
+    img: "/assets/post-4.png",
+    title: "Kıyı Rotası",
+    text: "Foça sahilinde tuzlu rüzgâr eşliğinde mola.",
+    link: "https://www.instagram.com/reel/DLAVHWrI9ql/",
+  },
+  {
+    img: "/assets/post-5.jpg",
+    title: "Kıyı Rotası",
+    text: "Foça sahilinde tuzlu rüzgâr eşliğinde mola.",
+    link: "https://www.instagram.com/reel/DHT-XsaMfyy/",
+  },
+  {
+    img: "/assets/post-6.jpg",
+    title: "Kıyı Rotası",
+    text: "Foça sahilinde tuzlu rüzgâr eşliğinde mola.",
+    link: "https://www.instagram.com/reel/C9XEKTZoeBv/",
+  },
+
+  // ⚑ Add as many as you like ⬆️
+];
 
 export default function InstagramPosts() {
-  useEffect(() => {
-    const scriptId = "instagram-embed-script";
-    if (!document.getElementById(scriptId)) {
-      const s = document.createElement("script");
-      s.id = scriptId;
-      s.src = "/embed.js";
-      s.async = true;
-      document.body.appendChild(s);
-      s.onload = () => window.instgrm?.Embeds.process();
-    } else {
-      window.instgrm?.Embeds.process();
-    }
-  }, []); // only run once on mount
-
   return (
-    <div className="instagram-posts">
-      {INSTAGRAM_URLS.map((url, idx) => (
-        <blockquote
-          key={idx}
-          className="instagram-media"
-          data-instgrm-captioned={INSTAGRAM_COMMON.captioned}
-          data-instgrm-permalink={url}
-          data-instgrm-version={INSTAGRAM_COMMON.version}
-          style={INSTAGRAM_COMMON.style}
-        />
+    <div className="insta-cards-container">
+      {posts.map(({ img, title, text, link }, i) => (
+        <article className="insta-card" key={i}>
+          <div className="insta-card-image-container">
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              <img className="insta-card-image" src={img} alt={title} />
+            </a>
+          </div>
+          <h3 className="insta-card-h3">{title}</h3>
+          <p className="insta-card-p">{text}</p>
+        </article>
       ))}
     </div>
   );
