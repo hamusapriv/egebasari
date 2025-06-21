@@ -18,9 +18,10 @@ const Section4 = () => {
           ></iframe>
         </div>
         <div className="contact-info">
-          <a href="tel:+905555555555">Telefon: +90 555 555 55 55</a>
+          <a href="tel:+905392145589">Telefon: +90 539 214 55 89</a>
+          <a href="tel:+905323116293">Telefon: +90 5323116293</a>
           <a
-            href="https://wa.me/905555555555"
+            href="https://wa.me/905524050843"
             target="_blank"
             rel="noopener noreferrer"
           >

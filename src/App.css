@@ -238,9 +238,12 @@
 }
 
 .card-image-container {
-  padding: 40px;
+  width: 150px;
+  height: 150px;
+  padding: 20px;
   background-color: white;
   border-radius: 50%;
+  overflow: hidden;
 }
 .card-image {
   width: 100%;
