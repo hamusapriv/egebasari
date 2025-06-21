@@ -1,6 +1,6 @@
 //InstagramPosts.jsx
 
-import React, { useEffect } from "react";
+import React from "react";
 
 const INSTAGRAM_URLS = [
   "https://www.instagram.com/reel/C_TxDk0oJBu/",
