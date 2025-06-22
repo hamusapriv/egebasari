@@ -128,6 +128,6 @@ section {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 2rem;
+  padding: 60px 1rem 1rem;
   scroll-snap-align: start;
 }

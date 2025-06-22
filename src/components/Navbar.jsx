@@ -1,27 +1,30 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import logo from "/assets/logo.png"; // Adjust the path as necessary
+import logo from "/assets/logo.png"; // adjust if needed
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-
-  const toggleMenu = () => setOpen(!open);
+  const toggleMenu = () => setOpen((prev) => !prev);
 
   return (
-    <nav className="navbar">
+    <>
       <div className="nav-brand">
-        <img className="nav-logo" src={logo} alt="Ege Basari Logo" />
+        <img className="nav-logo" src={logo} alt="Ege Başarı Logo" />
       </div>
-      <button
-        className="nav-toggle"
-        aria-label="Toggle navigation"
-        onClick={toggleMenu}
-      >
-        <span className="bar" />
-        <span className="bar" />
-        <span className="bar" />
-      </button>
+
+      <nav className="navbar">
+        <button
+          className={`nav-toggle ${open ? "open" : ""}`}
+          aria-label="Toggle navigation"
+          aria-expanded={open}
+          onClick={toggleMenu}
+        >
+          <span className="bar" />
+          <span className="bar" />
+          <span className="bar" />
+        </button>
+      </nav>
       <ul
         className={`nav-menu ${open ? "open" : ""}`}
         onClick={() => setOpen(false)}
@@ -41,7 +44,7 @@ function Navbar() {
           <NavLink to="/contact">Contact</NavLink>
         </li>
       </ul>
-    </nav>
+    </>
   );
 }
 

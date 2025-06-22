@@ -1,50 +1,61 @@
+/* =============== LAYOUT ================= */
+
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0 0 auto 0; /* stick to top */
   z-index: 10;
-  padding: 0 1rem;
-  padding: 10px 40px;
+  height: 80px;
+  padding: 0 10%;
+
+  /* automatic colour inversion */
+  color: #fff;
+  mix-blend-mode: difference;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .nav-logo {
   display: flex;
   align-items: center;
-  color: #fff;
-  text-decoration: none;
   height: 60px;
 }
 
 .nav-brand {
   font-size: 1.25rem;
   font-weight: 600;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 10px 20px;
+  z-index: 11; /* above the navbar */
 }
+
+/* =============== MENU LINKS ============= */
 
 .nav-menu {
   list-style: none;
   display: flex;
   gap: 1rem;
   margin: 0;
-  padding: 0;
+  padding: 0 5%;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 80px;
+  width: 100%;
+  z-index: 10; /* above the toggle */
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .nav-menu li a {
-  color: inherit;
   text-decoration: none;
-  padding: 6px 12px;
   font-weight: 600;
-
-  /* make letters start out white */
-  color: white;
-
-  /* invert whatever color’s underneath each glyph */
-  mix-blend-mode: difference;
-
-  /* soften/blend edges so it stays legible on busy backdrops */
+  color: white; /* inherits dynamic colour */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
   transition: all 0.3s ease;
 }
@@ -63,43 +74,86 @@
   text-decoration: underline;
 }
 
+/* =============== HAMBURGER / X ========== */
+
 .nav-toggle {
-  display: none;
+  display: none; /* shown only on mobile */
   flex-direction: column;
+  justify-content: center;
   gap: 4px;
+  width: 24px;
+  height: 24px;
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
+  color: inherit; /* inherit dynamic colour */
 }
 
 .bar {
-  width: 24px;
+  position: absolute;
+  left: 0;
+  width: 100%;
   height: 2px;
-  background-color: currentColor;
+  background-color: currentColor; /* track text colour */
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+/* default hamburger arrangement */
+.bar:nth-child(1) {
+  top: 4px;
+}
+.bar:nth-child(2) {
+  top: 11px;
+}
+.bar:nth-child(3) {
+  top: 18px;
+}
+
+/* morph into an “X” when .open is present */
+.nav-toggle.open .bar:nth-child(1) {
+  top: 11px;
+  transform: rotate(45deg);
+}
+.nav-toggle.open .bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.open .bar:nth-child(3) {
+  top: 11px;
+  transform: rotate(-45deg);
+}
+
+/* =============== MOBILE MENU ============ */
 
 @media (max-width: 768px) {
   .nav-toggle {
     display: flex;
   }
+
   .nav-menu {
-    z-index: 9;
     flex-direction: column;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: auto;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    width: 60%;
-    backdrop-filter: blur(50px);
+    inset: 0 auto 0 0;
+    width: 100%;
     height: 100vh;
-    transition: all 0.3s ease;
+    justify-content: center;
+
+    /* translucent backdrop blur */
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px); /* Safari / iOS */
+
     transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 9; /* under the toggle but over page content */
   }
+
+  .nav-menu li a {
+    color: black;
+    text-shadow: none;
+  }
+
   .nav-menu.open {
     transform: translateX(0);
-    /* display: flex; */
   }
 }

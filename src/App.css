@@ -165,25 +165,18 @@
 .section-1 {
   background-color: var(--black-pure);
   color: var(--white-pure);
-  z-index: 1;
 }
 .section-2 {
   background-color: var(--white-pure);
   color: var(--black-pure);
-
-  z-index: 2;
 }
 .section-3 {
   background-color: var(--black-pure);
   color: var(--white-pure);
-
-  z-index: 3;
 }
 .section-4 {
   background-color: var(--white-pure);
   color: var(--black-pure);
-
-  z-index: 4;
 }
 
 .section-1 {
@@ -192,13 +185,6 @@
 .section-2,
 .section-3 {
   justify-content: flex-start;
-}
-
-.section-1,
-.section-2,
-.section-3,
-.section-4 {
-  padding-top: 110px; /* Adjusted for fixed navbar height */
 }
 
 .contact-container {
