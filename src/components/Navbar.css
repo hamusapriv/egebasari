@@ -6,9 +6,9 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 10;
   padding: 0 1rem;
-  padding: 20px 40px;
+  padding: 10px 40px;
 }
 
 .nav-logo {
@@ -37,6 +37,26 @@
   text-decoration: none;
   padding: 6px 12px;
   font-weight: 600;
+
+  /* make letters start out white */
+  color: white;
+
+  /* invert whatever color’s underneath each glyph */
+  mix-blend-mode: difference;
+
+  /* soften/blend edges so it stays legible on busy backdrops */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  transition: all 0.3s ease;
+}
+
+.nav-menu li {
+  transition: transform 0.2s ease;
+}
+.nav-menu li:hover {
+  transform: translateY(-2px);
+}
+.nav-menu li:hover a {
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 1);
 }
 
 .nav-menu li a.active {

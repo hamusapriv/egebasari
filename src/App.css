@@ -1,13 +1,9 @@
 #root {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
   height: 100%;
-  /* Enable vertical scroll snapping for all sections */
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  -webkit-scroll-snap-type: y proximity; /* Safari */
 }
 
 /* ============== GLOBAL STYLES ============== */
@@ -60,11 +56,11 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  position: sticky;
-  top: 0;
+  position: relative;
+  /*   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 0; */
   padding: 0;
 }
 
@@ -190,6 +186,21 @@
   z-index: 4;
 }
 
+.section-1 {
+  overflow: auto;
+}
+.section-2,
+.section-3 {
+  justify-content: flex-start;
+}
+
+.section-1,
+.section-2,
+.section-3,
+.section-4 {
+  padding-top: 110px; /* Adjusted for fixed navbar height */
+}
+
 .contact-container {
   display: flex;
   flex-wrap: wrap;
@@ -238,6 +249,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   padding: 2rem;
+  justify-content: space-around;
 }
 
 .card-image-container {
@@ -264,13 +276,6 @@
   border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-}
-.section-1 {
-  overflow: auto;
-}
-.section-2,
-.section-3 {
-  justify-content: center;
 }
 
 .insta-cards-container {
