@@ -8,8 +8,10 @@ import "./App.css";
 import "./App-mobile.css";
 import "./index.css";
 import "./index-mobile.css";
+import useScrollAnimation from "./js/useScrollAnimation.js";
 
 function App() {
+  useScrollAnimation();
   return (
     <Router>
       <Navbar />

@@ -165,7 +165,8 @@
 .section-2,
 .section-3,
 .section-4 {
-  animation: slideIn 0.5s ease-in-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .section-1-text {
@@ -310,7 +311,7 @@
   margin-bottom: 0.5rem;
 }
 
-animate-in {
+.animate-in {
   animation: slideIn 0.5s ease-in-out forwards;
 }
 @keyframes slideIn {
