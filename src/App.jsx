@@ -4,14 +4,12 @@ import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Services from "./pages/Services.jsx";
 import Contact from "./pages/Contact.jsx";
-import useAutoAlign from "./js/useAutoAlign";
 import "./App.css";
 import "./App-mobile.css";
 import "./index.css";
 import "./index-mobile.css";
 
 function App() {
-  useAutoAlign();
   return (
     <Router>
       <Navbar />

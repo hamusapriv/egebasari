@@ -71,7 +71,6 @@ body {
   flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
-  color: var(--black-pure);
 }
 
 video {
@@ -109,7 +108,8 @@ video {
   }
 
   h1 {
-    margin-right: 0;
+    margin-right: auto;
+    margin-left: 0;
     white-space: normal;
   }
 }

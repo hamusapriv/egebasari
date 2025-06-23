@@ -54,18 +54,21 @@ const posts = [
 
 export default function InstagramPosts() {
   return (
-    <div className="insta-cards-container">
-      {posts.map(({ img, title, text, link }, i) => (
-        <article className="insta-card" key={i}>
-          <div className="insta-card-image-container">
-            <a href={link} target="_blank" rel="noopener noreferrer">
-              <img className="insta-card-image" src={img} alt={title} />
-            </a>
-          </div>
-          <h3 className="insta-card-h3">{title}</h3>
-          <p className="insta-card-p">{text}</p>
-        </article>
-      ))}
-    </div>
+    <>
+      <h3>Ege Başarı Sosyalde!</h3>
+      <div className="insta-cards-container">
+        {posts.map(({ img, title, text, link }, i) => (
+          <article className="insta-card" key={i}>
+            <div className="insta-card-image-container">
+              <a href={link} target="_blank" rel="noopener noreferrer">
+                <img className="insta-card-image" src={img} alt={title} />
+              </a>
+            </div>
+            <h3 className="insta-card-h3">{title}</h3>
+            <p className="insta-card-p">{text}</p>
+          </article>
+        ))}
+      </div>
+    </>
   );
 }

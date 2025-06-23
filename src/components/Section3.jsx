@@ -7,7 +7,7 @@ const Section3 = () => {
   return (
     <section className="section-3">
       {" "}
-      <h2>Programlarımız</h2>
+      <h2>Neden Bizi Seçmelisiniz?</h2>
       <div className="cards-container">
         <div className="card">
           <div className="card-image-container">
