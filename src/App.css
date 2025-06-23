@@ -194,10 +194,6 @@
   align-items: center;
 }
 
-.map-container {
-  min-width: 300px;
-}
-
 .contact-info {
   display: flex;
   flex-direction: column;
