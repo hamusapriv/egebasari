@@ -10,23 +10,21 @@ const Section1 = () => {
     <section className="section-1">
       <h2>Ege Başarı'yı Keşfedin</h2>
       <p className="section-1-text">
-        Ege Başarı Kurs Merkezi olarak Seferihisar’da 2. – 8. sınıf
-        öğrencilerinin hem akademik hem de kişisel gelişimlerini desteklemeyi
-        amaçlıyoruz. Kurumumuzda: Birebir İlgi & Takip: Ödevlerden konu
-        tekrarına, deneme sınavlarından aylık gelişim raporlarına kadar her
-        adımı takip ediyor, gelişim tablolarıyla hem öğrenci hem veliye
-        şeffaflık sunuyoruz. Alanında Uzman Kadro: Deneyimli öğretmenlerimiz,
-        her çocuğun öğrenme stiline uygun yöntemlerle bireysel başarıyı
-        hedefliyor. Teknoloji Destekli Eğitim: Akıllı tahtalar, interaktif
-        uygulamalar ve dijital platformlarla dersleri daha etkili ve eğlenceli
-        hale getiriyoruz. Güvenli ve Sıcak Ortam: Parmak izi giriş-çıkış
-        sistemiyle güvenliği sağlarken, samimi atmosferimizle öğrencilerimizin
-        kendilerini evindeymiş gibi hissetmesini sağlıyoruz. Aile İş Birliği:
-        Düzenli veli geri bildirim seansları ve online bildirim sistemi
-        sayesinde aileler her an süreçten haberdar oluyor. Bizim için başarı;
-        yalnızca sınav sonuçları değil, özgüveni yüksek, meraklı ve sorumluluk
-        sahibi bireyler yetiştirmektir. Ege Başarı ailesine katılın, çocuğunuzun
-        potansiyelini birlikte keşfedelim!
+        Ege Başarı Kurs Merkezi olarak Seferihisar'da 2-8. sınıf öğrencilerinin
+        hem akademik hem de kişisel gelişimlerini desteklemeyi amaçlıyoruz.
+        Kurumumuzda birebir ilgi ve takip, ödevlerden konu tekrarına, deneme
+        sınavlarından aylık gelişim raporlarına kadar her adımı düzenli olarak
+        takip ediyoruz. Alanında uzman kadromuz, her çocuğun öğrenme stiline
+        uygun yöntemlerle bireysel başarıyı hedefliyor. Teknoloji destekli
+        eğitim anlayışımızla akıllı tahtalar ve interaktif uygulamalar
+        kullanıyoruz. Güvenli ve sıcak ortamımızda, parmak izi giriş sistemiyle
+        güvenliği sağlarken samimi atmosferimizle öğrencilerimizin kendilerini
+        evlerinde hissetmesini amaçlıyoruz. Aile iş birliği kapsamında düzenli
+        veli geri bildirim seansları ve çevrim içi bildirim sistemi sayesinde
+        aileler sürece her an dahil olabiliyor. Bizim için başarı yalnızca sınav
+        sonuçları değil; özgüveni yüksek, meraklı ve sorumluluk sahibi bireyler
+        yetiştirmektir. Ege Başarı ailesine katılın, çocuğunuzun potansiyelini
+        birlikte kesfedelim!
       </p>
       <InstagramPosts posts={posts} />
     </section>
