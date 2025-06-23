@@ -14,7 +14,7 @@ export default function useScrollAnimation() {
           }
         });
       },
-      { threshold: 0.6 }
+      { threshold: 0.2 }
     );
 
     sections.forEach((sec) => {
