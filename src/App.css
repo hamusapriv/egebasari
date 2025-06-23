@@ -200,13 +200,15 @@
 .contact-info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   gap: 0.5rem;
 }
 
 .contact-info a {
   color: inherit;
   text-decoration: none;
+  gap: 0.5rem;
 }
 
 .contact-info a:hover {

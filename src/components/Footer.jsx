@@ -1,4 +1,8 @@
 import React from "react";
+import PhoneSVG from "./svgs/PhoneSVG";
+import WhatsappSVG from "./svgs/WhatsappSVG";
+import MailSVG from "./svgs/MailSVG";
+import InstagramSVG from "./svgs/InstagramSVG";
 
 const Footer = () => {
   return (
@@ -18,22 +22,60 @@ const Footer = () => {
           ></iframe>
         </div>
         <div className="contact-info">
-          <a href="tel:+905392145589">Telefon: +90 539 214 55 89</a>
-          <a href="tel:+905323116293">Telefon: +90 5323116293</a>
           <a
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            href="tel:+905392145589"
+          >
+            <PhoneSVG /> 0539 214 55 89
+          </a>
+          <a
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            href="tel:+905323116293"
+          >
+            {" "}
+            <PhoneSVG /> 0532 311 62 93
+          </a>
+          <a
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
             href="https://wa.me/905524050843"
             target="_blank"
             rel="noopener noreferrer"
           >
-            WhatsApp
+            <WhatsappSVG /> 0532 405 08 43
           </a>
-          <a href="mailto:info@egebasari.com">info@egebasari.com</a>
           <a
-            href="https://www.instagram.com/egebasarikurs/"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            href="mailto: egebasari@gmail.com"
+          >
+            <MailSVG /> egebasari@gmail.com
+          </a>
+          <a
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            href="https://www.instagram.com/egebasarikursu/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Instagram
+            <InstagramSVG /> @egebasarikursu
           </a>
         </div>
       </div>
