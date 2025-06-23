@@ -5,7 +5,7 @@ import ingilizce from "/assets/ingilizce.png";
 import lgshazırlık from "/assets/lgshazırlık.png";
 const Section2 = () => {
   return (
-    <section className="section-2">
+    <section className="section-2" id="section-2">
       <h2>Programlarımız</h2>
       <div className="cards-container">
         <div className="card">

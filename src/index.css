@@ -91,6 +91,7 @@ h5,
 h6 {
   font-family: "inter", sans-serif;
   font-weight: 400;
+  cursor: pointer;
 }
 
 h1 {
@@ -104,6 +105,12 @@ h2 {
   font-size: 2rem;
   margin: 0.5rem auto;
   font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+h2:hover {
+  transform: scale(1.05);
+  text-shadow: 2px 10px 10px rgba(0, 0, 0, 0.5);
 }
 
 h3 {

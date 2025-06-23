@@ -7,8 +7,32 @@ const Section1 = () => {
   ];
 
   return (
-    <section className="section-1">
+    <section className="section-1" id="section-1">
       <h2>Ege Başarı'yı Keşfedin</h2>
+      <blockquote
+        style={{
+          fontSize: "0.8rem",
+          margin: "0 auto 1rem",
+          fontStyle: "italic",
+          lineHeight: 1.4,
+          color: "#555",
+          maxWidth: "600px",
+        }}
+      >
+        “İyi bir başlangıç, işin yarısının yapılması demektir.”
+        <footer
+          style={{
+            textAlign: "right",
+            marginTop: "0.5rem",
+            fontSize: "0.75rem",
+            fontStyle: "normal",
+            color: "#333",
+          }}
+        >
+          — André Gide
+        </footer>
+      </blockquote>
+
       <p className="section-1-text">
         Ege Başarı Kurs Merkezi olarak Seferihisar'da 2-8. sınıf öğrencilerinin
         hem akademik hem de kişisel gelişimlerini desteklemeyi amaçlıyoruz.

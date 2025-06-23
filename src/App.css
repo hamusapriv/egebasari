@@ -174,7 +174,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 0 2rem 2rem;
   text-align: justify;
   max-width: 800px;
   margin: auto;
@@ -251,6 +251,12 @@
   flex: 1;
   text-align: start;
   justify-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .card-ul {
@@ -280,14 +286,21 @@
 
 .insta-card {
   display: grid;
-  grid-template-columns: 300px;
-  grid-template-rows: 300px 3rem 3rem;
+  grid-template-columns: 240px;
+  grid-template-rows: auto 240px auto;
   box-sizing: border-box;
   padding: 10px;
   border-radius: 8px;
   text-align: start;
+  gap: 10px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+  background-color: #00254663;
+  transition: all 0.3s ease;
 }
 
+.insta-card:hover {
+  transform: scale(1.05);
+}
 .insta-card-image-container {
   width: 100%;
   overflow: hidden;

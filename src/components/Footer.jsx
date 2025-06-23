@@ -1,8 +1,9 @@
 import React from "react";
 
 const Footer = () => {
-  return <section className="footer">
-      <h2>Bize Ulaşın</h2>
+  return (
+    <section className="footer" id="footer">
+      <h2>İletişim</h2>
       <div className="contact-container">
         <div className="map-container">
           <iframe
@@ -36,7 +37,8 @@ const Footer = () => {
           </a>
         </div>
       </div>
-  </section>;
+    </section>
+  );
 };
 
 export default Footer;

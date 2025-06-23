@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import logo from "/assets/logo.png"; // adjust if needed
+import { HashLink } from "react-router-hash-link";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -9,8 +10,19 @@ function Navbar() {
 
   return (
     <>
-      <div className="nav-brand">
-        <img className="nav-logo" src={logo} alt="Ege Başarı Logo" />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          fontSize: "1rem",
+          gap: "0.5rem",
+          padding: "0.5rem",
+          borderRadius: "8px",
+        }}
+        className="nav-brand"
+      >
+        <img className="nav-logo" src={logo} alt="Ege Başarı Logo" />{" "}
+        <p>Ege Başarı Kurs Merkezi</p>
       </div>
 
       <nav className="navbar">
@@ -30,18 +42,29 @@ function Navbar() {
         onClick={() => setOpen(false)}
       >
         <li>
-          <NavLink to="/" end>
-            Home
-          </NavLink>
+          <HashLink smooth to="#section-1">
+            Hakkımızda
+          </HashLink>
         </li>
         <li>
-          <NavLink to="/about">About</NavLink>
+          <HashLink smooth to="#section-2">
+            Programlarımız
+          </HashLink>
         </li>
         <li>
-          <NavLink to="/services">Services</NavLink>
+          <HashLink smooth to="#section-3">
+            Neden Biz?
+          </HashLink>
         </li>
         <li>
-          <NavLink to="/contact">Contact</NavLink>
+          <HashLink smooth to="#footer">
+            İletişim
+          </HashLink>
+        </li>
+        <li style={{ fontSize: "1.5rem" }}>
+          <HashLink smooth to="#hero-section">
+            &uarr;
+          </HashLink>
         </li>
       </ul>
     </>

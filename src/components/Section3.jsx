@@ -5,7 +5,7 @@ import güvenli from "/assets/güvenli-ortam.png";
 import vr from "/assets/vr.png";
 const Section3 = () => {
   return (
-    <section className="section-3">
+    <section className="section-3" id="section-3">
       {" "}
       <h2>Neden Bizi Seçmelisiniz?</h2>
       <div className="cards-container">

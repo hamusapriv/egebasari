@@ -1,9 +1,10 @@
 import React from "react";
 import sphere from "/assets/sphere.mov";
+import { HashLink } from "react-router-hash-link";
 
 const HeroSection = () => {
   return (
-    <section className="hero-section">
+    <section className="hero-section" id="hero-section">
       <div className="hero-content">
         <h1>
           <span className="shape E">E</span>ge'yi{" "}
@@ -17,7 +18,9 @@ const HeroSection = () => {
           öğrencilerimizi sadece sınavlara değil, hayata hazırlıyoruz. Çünkü
           bizim için başarı, birlikte büyümektir.
         </p>
-        <button className="btn hero-btn">Şimdi Başvur</button>
+        <HashLink smooth to="#footer" className="btn hero-btn">
+          Şimdi Başvur{" "}
+        </HashLink>
       </div>
       <div className="hero-video-container">
         <video
