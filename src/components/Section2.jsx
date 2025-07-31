@@ -107,11 +107,11 @@ const Section2 = () => {
           <div className="schedule-grid">
             <div className="schedule-item">
               <span className="schedule-day">Hafta İçi</span>
-              <span className="schedule-time">15:00 - 18:00</span>
+              <span className="schedule-time">15:00 - 19:00</span>
             </div>
             <div className="schedule-item">
               <span className="schedule-day">Cumartesi</span>
-              <span className="schedule-time">09:00 - 16:00</span>
+              <span className="schedule-time">10:00 - 18:00</span>
             </div>
           </div>
         </div>

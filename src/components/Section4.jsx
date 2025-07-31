@@ -14,6 +14,9 @@ const Section4 = () => {
           <a href="tel:+905392145589" className="btn primary-cta">
             📞 Hemen Ara
           </a>
+          <a href="tel:+905323116293" className="btn primary-cta">
+            📞 Hemen Ara
+          </a>
           <a
             href="https://wa.me/905524050843"
             target="_blank"
@@ -29,15 +32,15 @@ const Section4 = () => {
           <div className="hours-grid">
             <div className="hours-item">
               <span className="day">Pazartesi - Cuma</span>
-              <span className="time">09:00 - 18:00</span>
+              <span className="time">12:30 - 19:00</span>
             </div>
             <div className="hours-item">
               <span className="day">Cumartesi</span>
-              <span className="time">09:00 - 16:00</span>
+              <span className="time">09:30 - 18:00</span>
             </div>
             <div className="hours-item">
               <span className="day">Pazar</span>
-              <span className="time">Kapalı</span>
+              <span className="time">11:00 - 13:00</span>
             </div>
           </div>
         </div>
