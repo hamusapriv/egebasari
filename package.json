@@ -1,11 +1,12 @@
 {
   "name": "egebasari",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/generate-build-info.js && vite build",
+    "build:info": "node scripts/generate-build-info.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import logo from "/assets/logo.png"; // adjust if needed
@@ -6,59 +6,65 @@ import { HashLink } from "react-router-hash-link";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
   const toggleMenu = () => setOpen((prev) => !prev);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 50;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          fontSize: "1rem",
-          gap: "0.5rem",
-          padding: "0.5rem",
-          borderRadius: "8px",
-        }}
-        className="nav-brand"
+      <button
+        className={`nav-toggle ${open ? "open" : ""}`}
+        aria-label="Toggle navigation"
+        aria-expanded={open}
+        onClick={toggleMenu}
       >
-        <img className="nav-logo" src={logo} alt="Ege Başarı Logo" />{" "}
-        <p>Ege Başarı Kurs Merkezi</p>
-      </div>
-
-      <nav className="navbar">
-        <button
-          className={`nav-toggle ${open ? "open" : ""}`}
-          aria-label="Toggle navigation"
-          aria-expanded={open}
-          onClick={toggleMenu}
-        >
-          <span className="bar" />
-          <span className="bar" />
-          <span className="bar" />
-        </button>
+        <span className="bar" />
+        <span className="bar" />
+        <span className="bar" />
+      </button>
+      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+        <div className="nav-brand">
+          <img className="nav-logo" src={logo} alt="Ege Başarı Logo" />{" "}
+          <p>Ege Başarı Kurs Merkezi</p>
+        </div>
       </nav>
       <ul
         className={`nav-menu ${open ? "open" : ""}`}
         onClick={() => setOpen(false)}
       >
         <li>
-          <HashLink smooth to="#section-1">
+          <HashLink smooth to="#about">
             Hakkımızda
           </HashLink>
         </li>
         <li>
-          <HashLink smooth to="#section-2">
+          <HashLink smooth to="#programs">
             Programlarımız
           </HashLink>
         </li>
         <li>
-          <HashLink smooth to="#section-3">
+          <HashLink smooth to="#why-choose-us">
             Neden Biz?
           </HashLink>
         </li>
         <li>
-          <HashLink smooth to="#footer">
+          <HashLink smooth to="#contact-cta">
             İletişim
+          </HashLink>
+        </li>
+        <li>
+          <HashLink smooth to="#footer">
+            Bilgi
           </HashLink>
         </li>
         <li style={{ fontSize: "1.5rem" }}>

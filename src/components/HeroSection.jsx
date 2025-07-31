@@ -1,5 +1,5 @@
 import React from "react";
-import sphere from "/assets/sphere.mov";
+import HeroVideo from "/assets/hero-video-education-reduced.mp4";
 import { HashLink } from "react-router-hash-link";
 
 const HeroSection = () => {
@@ -25,7 +25,7 @@ const HeroSection = () => {
       <div className="hero-video-container">
         <video
           className="hero-video"
-          src={sphere}
+          src={HeroVideo}
           type="video/mp4"
           playsInline
           autoPlay

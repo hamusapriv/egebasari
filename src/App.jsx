@@ -4,6 +4,8 @@ import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Services from "./pages/Services.jsx";
 import Contact from "./pages/Contact.jsx";
+import PerformanceOptimizer from "./components/PerformanceOptimizer.jsx";
+import BuildInfo from "./components/BuildInfo.jsx";
 import "./App.css";
 import "./App-mobile.css";
 import "./index.css";
@@ -14,6 +16,8 @@ function App() {
   useScrollAnimation();
   return (
     <Router>
+      <BuildInfo />
+      <PerformanceOptimizer />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://egebasari.com/sitemap.xml
+
+# Disallow unnecessary files
+Disallow: /src/
+Disallow: *.js.map
+Disallow: *.css.map
+
+# Allow specific important files
+Allow: /assets/
+Allow: /public/
