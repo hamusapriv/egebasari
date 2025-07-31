@@ -6,7 +6,7 @@ import lgshazırlık from "/assets/lgshazırlık.png";
 
 const Section2 = () => {
   return (
-    <section className="programs-section" id="programs">
+    <section className="programs-section" id="programlarimiz">
       <div className="programs-header">
         <h2>Eğitim Programlarımız</h2>
         <p className="programs-description">

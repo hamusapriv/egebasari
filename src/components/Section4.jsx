@@ -2,7 +2,7 @@ import React from "react";
 
 const Section4 = () => {
   return (
-    <section className="contact-cta-section" id="contact-cta">
+    <section className="contact-cta-section" id="iletisim">
       <div className="cta-container">
         <h2>Hemen Başlayın!</h2>
         <p className="cta-description">

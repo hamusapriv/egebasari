@@ -13,7 +13,7 @@ const Section1 = () => {
   ];
 
   return (
-    <section className="about-section" id="about">
+    <section className="about-section" id="hakkimizda">
       <div className="about-header">
         <h2>Ege Başarı'yı Keşfedin</h2>
         <blockquote className="inspiring-quote">

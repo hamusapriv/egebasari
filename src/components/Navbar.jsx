@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import logo from "/assets/logo.png"; // adjust if needed
-import { HashLink } from "react-router-hash-link";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const toggleMenu = () => setOpen((prev) => !prev);
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setOpen(false);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,34 +49,32 @@ function Navbar() {
         onClick={() => setOpen(false)}
       >
         <li>
-          <HashLink smooth to="#about">
+          <button onClick={() => scrollToSection("hakkimizda")}>
             Hakkımızda
-          </HashLink>
+          </button>
         </li>
         <li>
-          <HashLink smooth to="#programs">
+          <button onClick={() => scrollToSection("programlarimiz")}>
             Programlarımız
-          </HashLink>
+          </button>
         </li>
         <li>
-          <HashLink smooth to="#why-choose-us">
+          <button onClick={() => scrollToSection("neden-biz")}>
             Neden Biz?
-          </HashLink>
+          </button>
         </li>
         <li>
-          <HashLink smooth to="#contact-cta">
-            İletişim
-          </HashLink>
+          <button onClick={() => scrollToSection("iletisim")}>İletişim</button>
         </li>
         <li>
-          <HashLink smooth to="#footer">
-            Bilgi
-          </HashLink>
+          <button onClick={() => scrollToSection("bilgi")}>Bilgi</button>
         </li>
         <li style={{ fontSize: "1.5rem" }}>
-          <HashLink smooth to="#hero-section">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
             &uarr;
-          </HashLink>
+          </button>
         </li>
       </ul>
     </>

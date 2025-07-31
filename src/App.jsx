@@ -1,9 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
-import About from "./pages/About.jsx";
-import Services from "./pages/Services.jsx";
-import Contact from "./pages/Contact.jsx";
 import PerformanceOptimizer from "./components/PerformanceOptimizer.jsx";
 import BuildInfo from "./components/BuildInfo.jsx";
 import "./App.css";
@@ -15,17 +11,12 @@ import useScrollAnimation from "./js/useScrollAnimation.js";
 function App() {
   useScrollAnimation();
   return (
-    <Router>
+    <>
       <BuildInfo />
       <PerformanceOptimizer />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-    </Router>
+      <Home />
+    </>
   );
 }
 

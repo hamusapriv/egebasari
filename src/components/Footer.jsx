@@ -6,7 +6,7 @@ import InstagramSVG from "./svgs/InstagramSVG";
 
 const Footer = () => {
   return (
-    <section className="footer" id="footer">
+    <section className="footer" id="bilgi">
       {/* Additional structured data for business hours */}
       <script type="application/ld+json">
         {JSON.stringify({

@@ -118,7 +118,23 @@ export default function InstagramPosts() {
               >
                 <img className="post-image" src={img} alt={title} />
                 <div className="post-overlay">
-                  <div className="instagram-play-icon">▶️</div>
+                  <div className="instagram-play-icon">
+                    <svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="24"
+                        cy="24"
+                        r="24"
+                        fill="rgba(255,255,255,0.9)"
+                      />
+                      <path d="M20 16v16l12-8-12-8z" fill="#000" />
+                    </svg>
+                  </div>
                   <span className="post-type">Reel</span>
                 </div>
               </a>

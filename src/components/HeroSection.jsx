@@ -1,8 +1,13 @@
 import React from "react";
 import HeroVideo from "/assets/hero-video-education-reduced.mp4";
-import { HashLink } from "react-router-hash-link";
 
 const HeroSection = () => {
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <section className="hero-section" id="hero-section">
       <div className="hero-content">
@@ -18,9 +23,12 @@ const HeroSection = () => {
           öğrencilerimizi sadece sınavlara değil, hayata hazırlıyoruz. Çünkü
           bizim için başarı, birlikte büyümektir.
         </p>
-        <HashLink smooth to="#footer" className="btn hero-btn">
+        <button
+          onClick={() => scrollToSection("bilgi")}
+          className="btn hero-btn"
+        >
           Şimdi Başvur{" "}
-        </HashLink>
+        </button>
       </div>
       <div className="hero-video-container">
         <video

@@ -6,7 +6,7 @@ import vr from "/assets/vr.png";
 
 const Section3 = () => {
   return (
-    <section className="why-choose-us-section" id="why-choose-us">
+    <section className="why-choose-us-section" id="neden-biz">
       <div className="why-choose-header">
         <h2>Neden Ege Başarı'yı Seçmelisiniz?</h2>
         <p className="why-choose-description">
@@ -179,8 +179,8 @@ const Section3 = () => {
             <div className="metric-label">Başarılı Öğrenci</div>
           </div>
           <div className="metric-item">
-            <div className="metric-number">20+</div>
-            <div className="metric-label">Uzman Öğretmen</div>
+            <div className="metric-number">Uzman</div>
+            <div className="metric-label"> Öğretmen Kadrosu</div>
           </div>
         </div>
       </div>

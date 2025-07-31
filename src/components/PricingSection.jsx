@@ -2,7 +2,7 @@ import React from "react";
 
 const PricingSection = () => {
   return (
-    <section className="pricing-section" id="pricing">
+    <section className="pricing-section" id="bilgi">
       <h2>Kurslarımız ve Fiyatlar</h2>
       <div className="pricing-grid">
         <div className="pricing-card">
