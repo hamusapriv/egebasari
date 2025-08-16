@@ -525,7 +525,7 @@
     padding: 4rem 1rem;
   }
   .hero-section {
-    height: calc(100vh - 50px); /* Adjusted for smaller screens */
+    height: 100vh; /* Adjusted for smaller screens */
   }
   .about-header h2 {
     font-size: 2.5rem;

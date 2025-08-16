@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import PerformanceOptimizer from "./components/PerformanceOptimizer.jsx";
 import BuildInfo from "./components/BuildInfo.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 import "./App.css";
 import "./App-mobile.css";
 import "./index.css";
@@ -16,6 +17,7 @@ function App() {
       <PerformanceOptimizer />
       <Navbar />
       <Home />
+      <ScrollToTop />
     </>
   );
 }
