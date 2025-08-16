@@ -9,7 +9,7 @@
   padding: 0 2rem 0 0;
   height: 80px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: sticky;
+  position: fixed;
 }
 
 .navbar::before {
@@ -171,13 +171,7 @@
 
 /* =============== MODERN MOBILE MENU ============ */
 
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0 1rem 0 0;
-    height: 50px;
-    position: fixed;
-  }
-
+@media (max-width: 1200px) {
   .nav-brand {
     padding: 10px 1rem;
     font-size: 1.1rem;

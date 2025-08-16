@@ -59,7 +59,7 @@
 /* This section styles the hero section of the application, including the video background and content overlay.*/
 .hero-section {
   width: 100%;
-  height: calc(100vh - 80px); /* Adjusted for fixed navbar height */
+  height: 100vh; /* Adjusted for fixed navbar height */
   display: flex;
   flex-direction: column;
   position: relative;

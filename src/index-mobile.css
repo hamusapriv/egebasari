@@ -1,7 +1,4 @@
 @media (max-width: 768px) {
-  :root {
-    text-align: center;
-  }
   body {
     font-size: 14px;
   }
