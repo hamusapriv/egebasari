@@ -5,6 +5,14 @@ import instaLogo from "/assets/insta-logo.jpg";
 
 const posts = [
   {
+    img: "/assets/post-7.jpg",
+    title: "VR Destekli Eğitim",
+    text: "📌 Eğitimde bir adım öndeyiz 🚀 VR destekli derslerimizle öğrencilerimiz artık sadece öğrenmiyor, yaşıyor 👓✨ Siz de çocuğunuzun geleceğini teknolojiyle buluşturun!",
+    link: "https://www.instagram.com/p/DNp7OQSC9Wx/",
+    hashtags:
+      "#EğitimdeTeknoloji #VREğitim #YeniNesilEğitim #EgeBaşarı #kursmerkezi #Seferihisar #İzmirEğitim #LGS2026 #ÖğrenciHayatı #StudyMotivation #VRders",
+  },
+  {
     img: "/assets/post-1.jpg",
     title: "Başarıya Giden Yol",
     text: "Ege Başarı Kurs Merkezi ile geleceğinize yön verin! Başarıya giden yolda yanınızdayız. Profesyonel eğitim kadromuz, kişiye özel ders programlarımız ve modern öğrenme yöntemlerimizle hedeflerinize ulaşmanız artık çok daha kolay. Siz de bizimle başarının bir parçası olun! 👩‍🎓💯👨‍🎓",
