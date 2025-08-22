@@ -23,6 +23,13 @@ const HeroSection = () => {
           öğrencilerimizi sadece sınavlara değil, hayata hazırlıyoruz. Çünkü
           bizim için başarı, birlikte büyümektir.
         </p>
+
+        <blockquote>
+          <p>
+            "VR destekli eğitim modelimizle tanışın, geleceğinizi
+            şekillendirin!"
+          </p>
+        </blockquote>
         <button
           onClick={() => scrollToSection("bilgi")}
           className="btn hero-btn"
