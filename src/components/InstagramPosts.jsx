@@ -14,6 +14,14 @@ const INSTAGRAM_URLS = [
 
 const posts = [
   {
+    img: "/assets/post-8.jpg",
+    title: "Yeni Dönem Kayıtları Açıldı",
+    text: "✨Geleceğinizi ertelemeyin! Başarı burada başlıyor. ⏳ Sınırlı sayıda kontenjan, hemen yerinizi ayırtın!",
+    link: "https://www.instagram.com/p/DODkKOcglWv/",
+    hashtags:
+      "#EgeBaşarı #Seferihisar #İzmir #LGS2026 #BaşarıBurada #EğitimdeFark #OkulBaşarı",
+  },
+  {
     img: "/assets/post-7.jpg",
     title: "VR Destekli Eğitim",
     text: "📌 Eğitimde bir adım öndeyiz 🚀 VR destekli derslerimizle öğrencilerimiz artık sadece öğrenmiyor, yaşıyor 👓✨ Siz de çocuğunuzun geleceğini teknolojiyle buluşturun!",
