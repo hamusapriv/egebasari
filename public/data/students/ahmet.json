@@ -1,12 +1,17 @@
 {
   "id": "ahmet",
-  "name": "Ahmet Yılmaz",
+  "name": "Ahmet Yılmazz",
   "class": "8. Sınıf",
   "parentContact": {
     "phone": "0532 123 45 67",
     "email": "ahmet.veli@email.com"
   },
-  "subjects": ["Matematik", "Türkçe", "Fen Bilgisi", "İngilizce"],
+  "subjects": [
+    "Matematik",
+    "Türkçe",
+    "Fen Bilgisi",
+    "İngilizce"
+  ],
   "attendance": [
     {
       "date": "2024-01-15",
@@ -65,5 +70,5 @@
     "Ocak ayı başarı belgesi",
     "Türkçe kompozisyon yarışması 2. lik"
   ],
-  "lastUpdated": "2024-01-20T10:30:00Z"
+  "lastUpdated": "2025-09-23T22:23:04.609Z"
 }
