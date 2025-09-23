@@ -1,15 +1,19 @@
 # Netlify redirects for SPA routing
 
 # Teacher dashboard - let React handle this route
-/dashboard    /index.html   200
 
-# Student pages routes  
-/ahmet    /index.html   200
-/mehmet   /index.html   200
-/ayse     /index.html   200
+/dashboard /index.html 200
+
+# Student pages routes
+
+/ahmet /index.html 200
+/mehmet /index.html 200
+/ayse /index.html 200
 
 # Direct admin access (for future use)
-# /admin    /admin/   301
+
+# /admin /admin/ 301
 
 # Catch-all for SPA routing (this will handle everything else)
-/*    /index.html   200
+
+/\* /index.html 200
