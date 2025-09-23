@@ -23,12 +23,12 @@ This allows us to test the student system without affecting the live egebasari.c
   - `https://taupe-sfogliatella-61a411.netlify.app/ahmet`
   - `https://taupe-sfogliatella-61a411.netlify.app/mehmet`
   - `https://taupe-sfogliatella-61a411.netlify.app/ayse`
-- **Custom Admin Panel**: `https://taupe-sfogliatella-61a411.netlify.app/admin` *(Password: egebasari2024)*
+- **Custom Admin Panel**: `https://taupe-sfogliatella-61a411.netlify.app/dashboard` *(Password: egebasari2024)*
 - **Netlify CMS**: `https://taupe-sfogliatella-61a411.netlify.app/admin/` *(Requires Netlify Identity)*
 
 ### 🎯 **Two Admin Interfaces:**
 
-1. **Custom Dashboard** (`/admin`):
+1. **Custom Dashboard** (`/dashboard`):
    - Simple password: `egebasari2024`
    - Edit student data with forms
    - Export JSON for manual updates
@@ -95,7 +95,7 @@ No impact on live egebasari.com (still on Firebase)
 
 ### Option 2: **Built-in Admin Dashboard**
 
-1. Go to `your-site.netlify.app/admin`
+1. Go to `your-site.netlify.app/dashboard`
 2. Use password: `egebasari2024`
 3. Edit student data
 4. Copy generated JSON and commit to GitHub

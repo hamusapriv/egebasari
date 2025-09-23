@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import StudentPage from "./components/StudentPage.jsx";
@@ -32,9 +32,8 @@ function App() {
         />
 
         {/* Admin dashboard route */}
-        <Route path="/admin" element={<AdminDashboard />} />
-
-        {/* Student pages route */}
+          <Route path="/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/*" element={<Navigate to="/dashboard" replace />} />        {/* Student pages route */}
         <Route path="/:studentId" element={<StudentPage />} />
       </Routes>
     </Router>
