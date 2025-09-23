@@ -15,24 +15,35 @@ const StudentLogin = ({ onLogin }) => {
     setError("");
 
     try {
-      // Get student list to find matching credentials
-      const response = await fetch("/data/students/index.json");
-      const studentsIndex = await response.json();
-
+      // Hardcoded student list for security (don't expose student index)
+      const studentIds = ["ahmet", "mehmet", "ayse"];
+      
       // Find student by checking credentials
       let authenticatedStudent = null;
 
-      for (const studentId of studentsIndex.students) {
-        const studentResponse = await fetch(`/data/students/${studentId}.json`);
-        const studentData = await studentResponse.json();
+      for (const studentId of studentIds) {
+        try {
+          const studentResponse = await fetch(`/data/students/${studentId}.json`);
+          
+          // Check if response is ok and is actually JSON
+          if (!studentResponse.ok) {
+            console.log(`Student ${studentId} not found or not accessible`);
+            continue;
+          }
+          
+          const studentData = await studentResponse.json();
 
-        if (
-          studentData.credentials &&
-          studentData.credentials.username === credentials.username &&
-          studentData.credentials.password === credentials.password
-        ) {
-          authenticatedStudent = studentData;
-          break;
+          if (
+            studentData.credentials &&
+            studentData.credentials.username === credentials.username &&
+            studentData.credentials.password === credentials.password
+          ) {
+            authenticatedStudent = studentData;
+            break;
+          }
+        } catch (error) {
+          console.log(`Error loading student ${studentId}:`, error);
+          continue;
         }
       }
 
@@ -80,6 +91,7 @@ const StudentLogin = ({ onLogin }) => {
                 })
               }
               placeholder="örn: ahmet.yilmaz"
+              autoComplete="username"
               required
             />
           </div>
@@ -97,6 +109,7 @@ const StudentLogin = ({ onLogin }) => {
                 })
               }
               placeholder="Şifrenizi girin"
+              autoComplete="current-password"
               required
             />
           </div>
