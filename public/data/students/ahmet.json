@@ -1,6 +1,6 @@
 {
   "id": "ahmet",
-  "name": "Ahmet Yılmazz",
+  "name": "sülüman",
   "class": "8. Sınıf",
   "parentContact": {
     "phone": "0532 123 45 67",
@@ -34,48 +34,7 @@
       "note": "İngilizce dersinde ödevini sundu"
     }
   ],
-  "grades": [
-    {
-      "subject": "Matematik",
-      "score": 85,
-      "maxScore": 100,
-      "date": "2024-01-10",
-      "type": "Sınav",
-      "note": "Geometri konularında başarılı"
-    },
-    {
-      "subject": "Türkçe",
-      "score": 92,
-      "maxScore": 100,
-      "date": "2024-01-12",
-      "type": "Ödev",
-      "note": "Kompozisyon yazma becerisi gelişmiş"
-    },
-    {
-      "subject": "Fen Bilgisi",
-      "score": 78,
-      "maxScore": 100,
-      "date": "2024-01-14",
-      "type": "Sınav",
-      "note": "Kimya konularında daha çok çalışmalı"
-    },
-    {
-      "subject": "Türkçe",
-      "score": 100,
-      "maxScore": 100,
-      "date": "2025-09-23",
-      "type": "Proje",
-      "note": ""
-    },
-    {
-      "subject": "Matematik",
-      "score": 0,
-      "maxScore": 100,
-      "date": "2025-09-23",
-      "type": "Sınav",
-      "note": ""
-    }
-  ],
+  "grades": [],
   "teacherNotes": "Ahmet, genel olarak derslerine düzenli katılan ve başarılı bir öğrenci. Matematik ve Türkçe derslerinde özellikle öne çıkıyor. Fen Bilgisi dersinde kimya konularında biraz daha çaba sarf etmesi gerekiyor. Sınıf arkadaşları ile iyi ilişkiler kurabiliyor.",
   "goals": [
     "Fen Bilgisi notunu 85'e çıkarmak",
@@ -86,5 +45,5 @@
     "Ocak ayı başarı belgesi",
     "Türkçe kompozisyon yarışması 2. lik"
   ],
-  "lastUpdated": "2025-09-23T22:23:58.080Z"
+  "lastUpdated": "2025-09-23T22:24:34.230Z"
 }
