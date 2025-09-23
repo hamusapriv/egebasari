@@ -225,6 +225,16 @@ textarea:focus {
   text-align: center;
 }
 
+.info-note {
+  background: #f0f4ff;
+  border: 1px solid #c6d2fd;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #4c51bf;
+}
+
 .save-btn {
   background-color: #007bff;
   color: white;

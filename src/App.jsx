@@ -7,6 +7,7 @@ import {
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import StudentPage from "./components/StudentPage.jsx";
+import StudentAuth from "./components/StudentAuth.jsx";
 import CMSRedirect from "./components/CMSRedirect.jsx";
 import PerformanceOptimizer from "./components/PerformanceOptimizer.jsx";
 import BuildInfo from "./components/BuildInfo.jsx";
@@ -40,9 +41,11 @@ function App() {
         <Route
           path="/admin/*"
           element={<Navigate to="/dashboard" replace />}
-        />{" "}
-        {/* Student pages route */}
-        <Route path="/:studentId" element={<StudentPage />} />
+        />
+        {/* Student login route */}
+        <Route path="/student" element={<StudentAuth />} />
+        {/* Student pages route - redirect to secure login */}
+        <Route path="/:studentId" element={<Navigate to="/student" replace />} />
       </Routes>
     </Router>
   );

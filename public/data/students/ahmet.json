@@ -2,6 +2,10 @@
   "id": "ahmet",
   "name": "Ahmet Yılmaz",
   "class": "8. Sınıf",
+  "credentials": {
+    "username": "ahmet.yilmaz",
+    "password": "ahmet123"
+  },
   "parentContact": {
     "phone": "0532 123 45 67",
     "email": "ahmet.veli@email.com"

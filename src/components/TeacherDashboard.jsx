@@ -227,6 +227,44 @@ const TeacherDashboard = () => {
                 </div>
               </section>
 
+              {/* Student Login Credentials */}
+              <section className="form-section">
+                <h3>🔐 Öğrenci Giriş Bilgileri</h3>
+                <div className="form-row">
+                  <label>
+                    Kullanıcı Adı:
+                    <input
+                      type="text"
+                      value={editData?.credentials?.username || ""}
+                      onChange={(e) =>
+                        handleInputChange("credentials", {
+                          ...editData?.credentials,
+                          username: e.target.value
+                        })
+                      }
+                      placeholder="örn: ahmet.yilmaz"
+                    />
+                  </label>
+                  <label>
+                    Şifre:
+                    <input
+                      type="text"
+                      value={editData?.credentials?.password || ""}
+                      onChange={(e) =>
+                        handleInputChange("credentials", {
+                          ...editData?.credentials,
+                          password: e.target.value
+                        })
+                      }
+                      placeholder="örn: ahmet123"
+                    />
+                  </label>
+                </div>
+                <div className="info-note">
+                  💡 Bu bilgiler öğrencinin kendi paneline giriş yapması için kullanılır.
+                </div>
+              </section>
+
               {/* Parent Contact */}
               <section className="form-section">
                 <h3>👨‍👩‍👧 Veli İletişim</h3>

@@ -2,6 +2,10 @@
   "id": "mehmet",
   "name": "Mehmet Demir",
   "class": "7. Sınıf",
+  "credentials": {
+    "username": "mehmet.demir",
+    "password": "mehmet123"
+  },
   "parentContact": {
     "phone": "0533 987 65 43",
     "email": "mehmet.anne@email.com"

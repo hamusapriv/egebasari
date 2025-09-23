@@ -2,6 +2,10 @@
   "id": "ayse",
   "name": "Ayşe Kaya",
   "class": "8. Sınıf",
+  "credentials": {
+    "username": "ayse.kaya",
+    "password": "ayse123"
+  },
   "parentContact": {
     "phone": "0534 111 22 33",
     "email": "ayse.baba@email.com"
