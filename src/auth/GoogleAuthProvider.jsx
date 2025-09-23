@@ -68,7 +68,7 @@ const GoogleAuthProvider = ({ children }) => {
       const allowedEmails = [
         "trusted.acc2023@gmail.com",
         "ezgi.end@gmail.com",
-        "denizddinc@gmail.com",
+        "deniz.ddinc@gmail.com",
       ];
 
       if (allowedEmails.includes(payload.email)) {

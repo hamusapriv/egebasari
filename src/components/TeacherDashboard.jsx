@@ -98,7 +98,7 @@ const TeacherDashboard = () => {
   const saveChanges = async () => {
     try {
       setLoading(true);
-      
+
       // Update the last updated timestamp
       const updatedData = {
         ...editData,
@@ -106,33 +106,42 @@ const TeacherDashboard = () => {
       };
 
       // Save to GitHub via Netlify function
-      const response = await fetch('/.netlify/functions/save-student', {
-        method: 'POST',
+      const response = await fetch("/.netlify/functions/save-student", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           studentId: updatedData.id,
           studentData: updatedData,
-          userEmail: user?.email
-        })
+          userEmail: user?.email,
+        }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Kaydetme hatası');
+        const errorText = await response.text();
+        console.error("Response error:", response.status, errorText);
+        let errorMessage = `HTTP ${response.status}`;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          errorMessage = errorText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
-      
+
       // Update local state
       setSelectedStudent(updatedData);
-      
+
       // Show success message
-      alert(`✅ ${updatedData.name} için veriler başarıyla kaydedildi ve canlı siteye yansıtıldı!`);
-      
+      alert(
+        `✅ ${updatedData.name} için veriler başarıyla kaydedildi ve canlı siteye yansıtıldı!`
+      );
     } catch (error) {
-      console.error('Save error:', error);
+      console.error("Save error:", error);
       alert(`❌ Kaydetme hatası: ${error.message}`);
     } finally {
       setLoading(false);
@@ -349,8 +358,8 @@ const TeacherDashboard = () => {
 
               {/* Save Button */}
               <div className="form-actions">
-                <button 
-                  onClick={saveChanges} 
+                <button
+                  onClick={saveChanges}
                   className="save-btn"
                   disabled={loading}
                 >
