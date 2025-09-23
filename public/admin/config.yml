@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: hamusapriv/egebasari
   branch: main
+  auth_type: implicit
+  base_url: https://egebasari.netlify.app
 
 media_folder: "public/assets"
 public_folder: "/assets"
@@ -15,7 +18,12 @@ collections:
     extension: "json"
     format: "json"
     fields:
-      - { label: "ID", name: "id", widget: "string", hint: "Öğrenci kimliği (dosya adı olarak kullanılır)" }
+      - {
+          label: "ID",
+          name: "id",
+          widget: "string",
+          hint: "Öğrenci kimliği (dosya adı olarak kullanılır)",
+        }
       - { label: "Ad Soyad", name: "name", widget: "string" }
       - { label: "Sınıf", name: "class", widget: "string" }
       - label: "Veli İletişim"
@@ -29,7 +37,7 @@ collections:
           name: "subjects",
           widget: "list",
           default: ["Matematik", "Türkçe", "Fen Bilgisi", "İngilizce"],
-          field: { label: "Ders", name: "subject", widget: "string" }
+          field: { label: "Ders", name: "subject", widget: "string" },
         }
       - label: "Devamsızlık Kayıtları"
         name: "attendance"
@@ -63,27 +71,32 @@ collections:
               options: ["Sınav", "Ödev", "Proje", "Performans"],
             }
           - { label: "Açıklama", name: "note", widget: "text", required: false }
-      - { label: "Öğretmen Notları", name: "teacherNotes", widget: "text", required: false }
+      - {
+          label: "Öğretmen Notları",
+          name: "teacherNotes",
+          widget: "text",
+          required: false,
+        }
       - {
           label: "Hedefler",
           name: "goals",
           widget: "list",
           field: { label: "Hedef", name: "goal", widget: "string" },
-          required: false
+          required: false,
         }
       - {
           label: "Başarılar",
           name: "achievements",
           widget: "list",
           field: { label: "Başarı", name: "achievement", widget: "string" },
-          required: false
+          required: false,
         }
       - {
           label: "Son Güncelleme",
           name: "lastUpdated",
           widget: "datetime",
           default: "",
-          required: false
+          required: false,
         }
 
   - name: "student-index"

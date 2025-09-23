@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import StudentPage from "./components/StudentPage.jsx";
@@ -30,10 +35,13 @@ function App() {
             </>
           }
         />
-
         {/* Admin dashboard route - redirect to Netlify CMS */}
-          <Route path="/dashboard" element={<CMSRedirect />} />
-          <Route path="/admin/*" element={<Navigate to="/dashboard" replace />} />        {/* Student pages route */}
+        <Route path="/dashboard" element={<CMSRedirect />} />
+        <Route
+          path="/admin/*"
+          element={<Navigate to="/dashboard" replace />}
+        />{" "}
+        {/* Student pages route */}
         <Route path="/:studentId" element={<StudentPage />} />
       </Routes>
     </Router>

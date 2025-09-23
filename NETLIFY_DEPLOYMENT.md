@@ -19,23 +19,24 @@ This allows us to test the student system without affecting the live egebasari.c
 ## 🌐 **Testing URLs** (taupe-sfogliatella-61a411.netlify.app)
 
 - **Main Site**: `https://taupe-sfogliatella-61a411.netlify.app/`
-- **Student Pages**: 
+- **Student Pages**:
   - `https://taupe-sfogliatella-61a411.netlify.app/ahmet`
   - `https://taupe-sfogliatella-61a411.netlify.app/mehmet`
   - `https://taupe-sfogliatella-61a411.netlify.app/ayse`
-- **Admin Panel (Netlify CMS)**: `https://taupe-sfogliatella-61a411.netlify.app/dashboard` *(Requires Netlify Identity login)*
-- **Netlify CMS**: `https://taupe-sfogliatella-61a411.netlify.app/admin/` *(Requires Netlify Identity)*
+- **Admin Panel (Netlify CMS)**: `https://taupe-sfogliatella-61a411.netlify.app/dashboard` _(Requires Netlify Identity login)_
+- **Netlify CMS**: `https://taupe-sfogliatella-61a411.netlify.app/admin/` _(Requires Netlify Identity)_
 
 ### 🎯 **Admin Interface:**
 
 **Netlify CMS Dashboard** (`/dashboard` or `/admin/`):
-   - **What**: Professional content management system
-   - **Features**: 
-     - Visual editor for student data
-     - Automatic Git commits when you save changes
-     - Instant deployment to live site
-     - User authentication through Netlify Identity
-   - **Access**: Requires Netlify Identity setup (see setup instructions below)## 🔄 **Phase 2: Migration to egebasari.com (After Testing)**
+
+- **What**: Professional content management system
+- **Features**:
+  - Visual editor for student data
+  - Automatic Git commits when you save changes
+  - Instant deployment to live site
+  - User authentication through Netlify Identity
+- **Access**: Requires Netlify Identity setup (see setup instructions below)## 🔄 **Phase 2: Migration to egebasari.com (After Testing)**
 
 Once testing is complete on the Netlify URL:
 
