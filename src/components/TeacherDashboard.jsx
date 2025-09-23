@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useGoogleAuth } from '../auth/GoogleAuthProvider.jsx';
-import './TeacherDashboard.css';
+import React, { useState, useEffect } from "react";
+import { useGoogleAuth } from "../auth/GoogleAuthProvider.jsx";
+import "./TeacherDashboard.css";
 
 const TeacherDashboard = () => {
   const { user, signOut } = useGoogleAuth();
@@ -16,11 +16,11 @@ const TeacherDashboard = () => {
   const loadStudents = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/data/students/index.json');
+      const response = await fetch("/data/students/index.json");
       const data = await response.json();
       setStudents(data.students);
     } catch (error) {
-      console.error('Öğrenci listesi yüklenemedi:', error);
+      console.error("Öğrenci listesi yüklenemedi:", error);
     } finally {
       setLoading(false);
     }
@@ -33,14 +33,14 @@ const TeacherDashboard = () => {
       setSelectedStudent(data);
       setEditData({ ...data });
     } catch (error) {
-      console.error('Öğrenci detayları yüklenemedi:', error);
+      console.error("Öğrenci detayları yüklenemedi:", error);
     }
   };
 
   const handleInputChange = (field, value, index = null, subfield = null) => {
-    setEditData(prev => {
+    setEditData((prev) => {
       const newData = { ...prev };
-      
+
       if (index !== null && subfield) {
         // For array items with subfields (like grades, attendance)
         newData[field][index][subfield] = value;
@@ -54,7 +54,7 @@ const TeacherDashboard = () => {
         // For simple fields
         newData[field] = value;
       }
-      
+
       return newData;
     });
   };
@@ -64,56 +64,79 @@ const TeacherDashboard = () => {
       subject: "Matematik",
       score: 0,
       maxScore: 100,
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       type: "Sınav",
-      note: ""
+      note: "",
     };
-    
-    setEditData(prev => ({
+
+    setEditData((prev) => ({
       ...prev,
-      grades: [...(prev.grades || []), newGrade]
+      grades: [...(prev.grades || []), newGrade],
     }));
   };
 
   const addAttendance = () => {
     const newAttendance = {
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       present: true,
-      note: ""
+      note: "",
     };
-    
-    setEditData(prev => ({
+
+    setEditData((prev) => ({
       ...prev,
-      attendance: [...(prev.attendance || []), newAttendance]
+      attendance: [...(prev.attendance || []), newAttendance],
     }));
   };
 
   const removeItem = (field, index) => {
-    setEditData(prev => ({
+    setEditData((prev) => ({
       ...prev,
-      [field]: prev[field].filter((_, i) => i !== index)
+      [field]: prev[field].filter((_, i) => i !== index),
     }));
   };
 
-  const saveChanges = () => {
-    // Update the last updated timestamp
-    const updatedData = {
-      ...editData,
-      lastUpdated: new Date().toISOString()
-    };
+  const saveChanges = async () => {
+    try {
+      setLoading(true);
+      
+      // Update the last updated timestamp
+      const updatedData = {
+        ...editData,
+        lastUpdated: new Date().toISOString(),
+      };
 
-    // Create downloadable JSON file
-    const dataStr = JSON.stringify(updatedData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `${updatedData.id}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
+      // Save to GitHub via Netlify function
+      const response = await fetch('/.netlify/functions/save-student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          studentId: updatedData.id,
+          studentData: updatedData,
+          userEmail: user?.email
+        })
+      });
 
-    alert(`${updatedData.name} için veriler güncellendi! JSON dosyası indirildi. Bu dosyayı GitHub'a yüklemeniz gerekiyor.`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Kaydetme hatası');
+      }
+
+      const result = await response.json();
+      
+      // Update local state
+      setSelectedStudent(updatedData);
+      
+      // Show success message
+      alert(`✅ ${updatedData.name} için veriler başarıyla kaydedildi ve canlı siteye yansıtıldı!`);
+      
+    } catch (error) {
+      console.error('Save error:', error);
+      alert(`❌ Kaydetme hatası: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -140,11 +163,13 @@ const TeacherDashboard = () => {
         <aside className="students-sidebar">
           <h3>📚 Öğrenciler</h3>
           <div className="students-list">
-            {students.map(student => (
+            {students.map((student) => (
               <button
                 key={student.id}
                 onClick={() => loadStudentDetails(student.id)}
-                className={`student-item ${selectedStudent?.id === student.id ? 'active' : ''}`}
+                className={`student-item ${
+                  selectedStudent?.id === student.id ? "active" : ""
+                }`}
               >
                 <div className="student-name">{student.name}</div>
                 <div className="student-class">{student.class}</div>
@@ -157,12 +182,15 @@ const TeacherDashboard = () => {
           {!selectedStudent ? (
             <div className="no-selection">
               <h3>👈 Sol menüden bir öğrenci seçin</h3>
-              <p>Öğrenci bilgilerini görüntülemek ve düzenlemek için listeden bir öğrenci seçin.</p>
+              <p>
+                Öğrenci bilgilerini görüntülemek ve düzenlemek için listeden bir
+                öğrenci seçin.
+              </p>
             </div>
           ) : (
             <div className="edit-form">
               <h2>✏️ {selectedStudent.name} - Bilgi Düzenleme</h2>
-              
+
               {/* Basic Info */}
               <section className="form-section">
                 <h3>📝 Temel Bilgiler</h3>
@@ -171,16 +199,20 @@ const TeacherDashboard = () => {
                     Ad Soyad:
                     <input
                       type="text"
-                      value={editData?.name || ''}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      value={editData?.name || ""}
+                      onChange={(e) =>
+                        handleInputChange("name", e.target.value)
+                      }
                     />
                   </label>
                   <label>
                     Sınıf:
                     <input
                       type="text"
-                      value={editData?.class || ''}
-                      onChange={(e) => handleInputChange('class', e.target.value)}
+                      value={editData?.class || ""}
+                      onChange={(e) =>
+                        handleInputChange("class", e.target.value)
+                      }
                     />
                   </label>
                 </div>
@@ -194,16 +226,30 @@ const TeacherDashboard = () => {
                     Telefon:
                     <input
                       type="tel"
-                      value={editData?.parentContact?.phone || ''}
-                      onChange={(e) => handleInputChange('parentContact', e.target.value, null, 'phone')}
+                      value={editData?.parentContact?.phone || ""}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "parentContact",
+                          e.target.value,
+                          null,
+                          "phone"
+                        )
+                      }
                     />
                   </label>
                   <label>
                     Email:
                     <input
                       type="email"
-                      value={editData?.parentContact?.email || ''}
-                      onChange={(e) => handleInputChange('parentContact', e.target.value, null, 'email')}
+                      value={editData?.parentContact?.email || ""}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "parentContact",
+                          e.target.value,
+                          null,
+                          "email"
+                        )
+                      }
                     />
                   </label>
                 </div>
@@ -213,8 +259,10 @@ const TeacherDashboard = () => {
               <section className="form-section">
                 <h3>📋 Öğretmen Notları</h3>
                 <textarea
-                  value={editData?.teacherNotes || ''}
-                  onChange={(e) => handleInputChange('teacherNotes', e.target.value)}
+                  value={editData?.teacherNotes || ""}
+                  onChange={(e) =>
+                    handleInputChange("teacherNotes", e.target.value)
+                  }
                   rows="4"
                   placeholder="Öğrenci hakkında notlarınız..."
                 />
@@ -222,15 +270,25 @@ const TeacherDashboard = () => {
 
               {/* Grades */}
               <section className="form-section">
-                <h3>📊 Notlar 
-                  <button onClick={addGrade} className="add-btn">+ Yeni Not</button>
+                <h3>
+                  📊 Notlar
+                  <button onClick={addGrade} className="add-btn">
+                    + Yeni Not
+                  </button>
                 </h3>
                 {editData?.grades?.map((grade, index) => (
                   <div key={index} className="grade-item">
                     <div className="form-row">
                       <select
                         value={grade.subject}
-                        onChange={(e) => handleInputChange('grades', e.target.value, index, 'subject')}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "grades",
+                            e.target.value,
+                            index,
+                            "subject"
+                          )
+                        }
                       >
                         <option value="Matematik">Matematik</option>
                         <option value="Türkçe">Türkçe</option>
@@ -241,11 +299,25 @@ const TeacherDashboard = () => {
                         type="number"
                         placeholder="Not"
                         value={grade.score}
-                        onChange={(e) => handleInputChange('grades', parseInt(e.target.value), index, 'score')}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "grades",
+                            parseInt(e.target.value),
+                            index,
+                            "score"
+                          )
+                        }
                       />
                       <select
                         value={grade.type}
-                        onChange={(e) => handleInputChange('grades', e.target.value, index, 'type')}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "grades",
+                            e.target.value,
+                            index,
+                            "type"
+                          )
+                        }
                       >
                         <option value="Sınav">Sınav</option>
                         <option value="Ödev">Ödev</option>
@@ -255,9 +327,21 @@ const TeacherDashboard = () => {
                       <input
                         type="date"
                         value={grade.date}
-                        onChange={(e) => handleInputChange('grades', e.target.value, index, 'date')}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "grades",
+                            e.target.value,
+                            index,
+                            "date"
+                          )
+                        }
                       />
-                      <button onClick={() => removeItem('grades', index)} className="remove-btn">🗑️</button>
+                      <button
+                        onClick={() => removeItem("grades", index)}
+                        className="remove-btn"
+                      >
+                        🗑️
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -265,8 +349,12 @@ const TeacherDashboard = () => {
 
               {/* Save Button */}
               <div className="form-actions">
-                <button onClick={saveChanges} className="save-btn">
-                  💾 Değişiklikleri Kaydet ve İndir
+                <button 
+                  onClick={saveChanges} 
+                  className="save-btn"
+                  disabled={loading}
+                >
+                  {loading ? "⏳ Kaydediliyor..." : "💾 Değişiklikleri Kaydet"}
                 </button>
               </div>
             </div>

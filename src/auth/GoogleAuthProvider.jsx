@@ -66,8 +66,9 @@ const GoogleAuthProvider = ({ children }) => {
 
       // Check if email is allowed (you can customize this list)
       const allowedEmails = [
-        "trusted.acc2023@gmail.com", // Add your email
-        // Add other teacher emails here
+        "trusted.acc2023@gmail.com",
+        "ezgi.end@gmail.com",
+        "denizddinc@gmail.com",
       ];
 
       if (allowedEmails.includes(payload.email)) {
