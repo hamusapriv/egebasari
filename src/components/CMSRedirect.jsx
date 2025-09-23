@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGoogleAuth } from '../auth/GoogleAuthProvider.jsx';
+import { useGoogleAuth } from "../auth/GoogleAuthProvider.jsx";
 
 const CMSRedirect = () => {
   const { isAuthenticated, isLoading, signIn, user } = useGoogleAuth();
@@ -47,12 +47,14 @@ const CMSRedirect = () => {
           height: "100vh",
           fontSize: "18px",
           fontFamily: "Arial, sans-serif",
-          gap: "20px"
+          gap: "20px",
         }}
       >
         <div style={{ textAlign: "center" }}>
           <h2>Öğretmen Paneli / Teacher Dashboard</h2>
-          <p>Öğrenci verilerini düzenlemek için Google hesabınızla giriş yapın.</p>
+          <p>
+            Öğrenci verilerini düzenlemek için Google hesabınızla giriş yapın.
+          </p>
           <p>Sign in with your Google account to edit student data.</p>
         </div>
         <button
@@ -67,7 +69,7 @@ const CMSRedirect = () => {
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
-            gap: "10px"
+            gap: "10px",
           }}
         >
           <span>🔐</span>
