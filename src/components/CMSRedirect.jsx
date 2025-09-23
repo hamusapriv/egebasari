@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useAuth0 } from '@auth0/auth0-react';
+import { useGoogleAuth } from '../auth/GoogleAuthProvider.jsx';
 
 const CMSRedirect = () => {
-  const { isAuthenticated, isLoading, loginWithRedirect, user } = useAuth0();
+  const { isAuthenticated, isLoading, signIn, user } = useGoogleAuth();
 
   useEffect(() => {
     if (!isLoading) {
@@ -10,15 +10,11 @@ const CMSRedirect = () => {
         // User is authenticated, redirect to CMS
         window.location.href = "/admin/";
       } else {
-        // User is not authenticated, redirect to login
-        loginWithRedirect({
-          appState: {
-            returnTo: "/admin/"
-          }
-        });
+        // User is not authenticated, show login button
+        // Don't auto-redirect, let user choose to sign in
       }
     }
-  }, [isAuthenticated, isLoading, loginWithRedirect]);
+  }, [isAuthenticated, isLoading]);
 
   if (isLoading) {
     return (
@@ -36,6 +32,47 @@ const CMSRedirect = () => {
           <p>Yükleniyor...</p>
           <p>Loading...</p>
         </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "18px",
+          fontFamily: "Arial, sans-serif",
+          gap: "20px"
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <h2>Öğretmen Paneli / Teacher Dashboard</h2>
+          <p>Öğrenci verilerini düzenlemek için Google hesabınızla giriş yapın.</p>
+          <p>Sign in with your Google account to edit student data.</p>
+        </div>
+        <button
+          onClick={signIn}
+          style={{
+            padding: "12px 24px",
+            fontSize: "16px",
+            backgroundColor: "#4285f4",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}
+        >
+          <span>🔐</span>
+          Google ile Giriş Yap / Sign in with Google
+        </button>
       </div>
     );
   }
