@@ -92,7 +92,7 @@ const CMSRedirect = () => {
         fontSize: "18px",
         fontFamily: "Arial, sans-serif",
         gap: "30px",
-        padding: "20px"
+        padding: "20px",
       }}
     >
       <div style={{ textAlign: "center", maxWidth: "600px" }}>
@@ -102,35 +102,43 @@ const CMSRedirect = () => {
             Hoş geldiniz, {user.name || user.email}!
           </p>
         )}
-        
-        <div style={{ 
-          backgroundColor: "#f8f9fa", 
-          padding: "20px", 
-          borderRadius: "8px", 
-          marginTop: "20px",
-          textAlign: "left"
-        }}>
-          <h3>🔧 Kurulum devam ediyor... / Setup in progress...</h3>
-          <p><strong>Tamamlanan:</strong></p>
+
+        <div
+          style={{
+            backgroundColor: "#f8f9fa",
+            padding: "20px",
+            borderRadius: "8px",
+            marginTop: "20px",
+            textAlign: "left",
+          }}
+        >
+          <h3>✅ Kurulum Tamamlandı! / Setup Complete!</h3>
+          <p>
+            <strong>Tamamlanan:</strong>
+          </p>
           <ul>
             <li>✅ Google OAuth entegrasyonu</li>
             <li>✅ Öğretmen kimlik doğrulaması</li>
+            <li>✅ GitHub OAuth kurulumu</li>
+            <li>✅ Netlify CMS backend konfigürasyonu</li>
           </ul>
           
-          <p><strong>Yapılacaklar:</strong></p>
-          <ul>
-            <li>⏳ GitHub OAuth kurulumu (CMS için)</li>
-            <li>⏳ Netlify CMS backend konfigürasyonu</li>
-          </ul>
-          
-          <p style={{ marginTop: "15px", fontSize: "14px", color: "#666" }}>
-            CMS kurulumu tamamlandıktan sonra bu sayfadan doğrudan öğrenci verilerini düzenleyebileceksiniz.
+          <p style={{ 
+            marginTop: "15px", 
+            fontSize: "16px", 
+            color: "#28a745",
+            fontWeight: "bold" 
+          }}>
+            🎉 Artık CMS'i kullanarak öğrenci verilerini düzenleyebilirsiniz!
+          </p>
+          <p style={{ fontSize: "14px", color: "#666" }}>
+            Değişiklikleriniz otomatik olarak GitHub'a kaydedilip canlı siteye yansıyacak.
           </p>
         </div>
-        
+
         <div style={{ marginTop: "20px" }}>
           <button
-            onClick={() => window.location.href = "/"}
+            onClick={() => (window.location.href = "/")}
             style={{
               padding: "10px 20px",
               fontSize: "16px",
@@ -139,12 +147,28 @@ const CMSRedirect = () => {
               border: "none",
               borderRadius: "6px",
               cursor: "pointer",
-              marginRight: "10px"
+              marginRight: "10px",
             }}
           >
             🏠 Ana Sayfa / Home
           </button>
-          
+
+          <button
+            onClick={() => (window.location.href = "/admin/")}
+            style={{
+              padding: "10px 20px",
+              fontSize: "16px",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              marginRight: "10px",
+            }}
+          >
+            📝 CMS'e Git / Go to CMS
+          </button>
+
           <button
             onClick={signOut}
             style={{
@@ -155,7 +179,6 @@ const CMSRedirect = () => {
               border: "none",
               borderRadius: "6px",
               cursor: "pointer",
-              marginLeft: "10px"
             }}
           >
             🚪 Çıkış Yap / Logout
