@@ -11,9 +11,11 @@ collections:
     folder: "public/data/students"
     create: true
     delete: true
-    slug: "{{slug}}"
+    slug: "{{id}}"
+    extension: "json"
+    format: "json"
     fields:
-      - { label: "ID", name: "id", widget: "string" }
+      - { label: "ID", name: "id", widget: "string", hint: "Öğrenci kimliği (dosya adı olarak kullanılır)" }
       - { label: "Ad Soyad", name: "name", widget: "string" }
       - { label: "Sınıf", name: "class", widget: "string" }
       - label: "Veli İletişim"
@@ -27,6 +29,7 @@ collections:
           name: "subjects",
           widget: "list",
           default: ["Matematik", "Türkçe", "Fen Bilgisi", "İngilizce"],
+          field: { label: "Ders", name: "subject", widget: "string" }
         }
       - label: "Devamsızlık Kayıtları"
         name: "attendance"
@@ -60,22 +63,40 @@ collections:
               options: ["Sınav", "Ödev", "Proje", "Performans"],
             }
           - { label: "Açıklama", name: "note", widget: "text", required: false }
-      - { label: "Öğretmen Notları", name: "teacherNotes", widget: "text" }
+      - { label: "Öğretmen Notları", name: "teacherNotes", widget: "text", required: false }
       - {
           label: "Hedefler",
           name: "goals",
           widget: "list",
           field: { label: "Hedef", name: "goal", widget: "string" },
+          required: false
         }
       - {
           label: "Başarılar",
           name: "achievements",
           widget: "list",
           field: { label: "Başarı", name: "achievement", widget: "string" },
+          required: false
         }
       - {
           label: "Son Güncelleme",
           name: "lastUpdated",
           widget: "datetime",
           default: "",
+          required: false
         }
+
+  - name: "student-index"
+    label: "Öğrenci Listesi"
+    files:
+      - label: "Öğrenci Index"
+        name: "index"
+        file: "public/data/students/index.json"
+        fields:
+          - label: "Öğrenciler"
+            name: "students"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Ad Soyad", name: "name", widget: "string" }
+              - { label: "Sınıf", name: "class", widget: "string" }
