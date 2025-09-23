@@ -239,7 +239,7 @@ const TeacherDashboard = () => {
                       onChange={(e) =>
                         handleInputChange("credentials", {
                           ...editData?.credentials,
-                          username: e.target.value
+                          username: e.target.value,
                         })
                       }
                       placeholder="örn: ahmet.yilmaz"
@@ -253,7 +253,7 @@ const TeacherDashboard = () => {
                       onChange={(e) =>
                         handleInputChange("credentials", {
                           ...editData?.credentials,
-                          password: e.target.value
+                          password: e.target.value,
                         })
                       }
                       placeholder="örn: ahmet123"
@@ -261,7 +261,8 @@ const TeacherDashboard = () => {
                   </label>
                 </div>
                 <div className="info-note">
-                  💡 Bu bilgiler öğrencinin kendi paneline giriş yapması için kullanılır.
+                  💡 Bu bilgiler öğrencinin kendi paneline giriş yapması için
+                  kullanılır.
                 </div>
               </section>
 

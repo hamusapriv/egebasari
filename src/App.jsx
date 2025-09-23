@@ -38,14 +38,14 @@ function App() {
         />
         {/* Admin dashboard route - redirect to Netlify CMS */}
         <Route path="/dashboard" element={<CMSRedirect />} />
-        <Route
-          path="/admin/*"
-          element={<Navigate to="/dashboard" replace />}
-        />
+        <Route path="/admin/*" element={<Navigate to="/dashboard" replace />} />
         {/* Student login route */}
         <Route path="/student" element={<StudentAuth />} />
         {/* Student pages route - redirect to secure login */}
-        <Route path="/:studentId" element={<Navigate to="/student" replace />} />
+        <Route
+          path="/:studentId"
+          element={<Navigate to="/student" replace />}
+        />
       </Routes>
     </Router>
   );

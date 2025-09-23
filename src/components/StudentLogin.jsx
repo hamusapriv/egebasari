@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
-import './StudentLogin.css';
+import React, { useState } from "react";
+import "./StudentLogin.css";
 
 const StudentLogin = ({ onLogin }) => {
   const [credentials, setCredentials] = useState({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       // Get student list to find matching credentials
-      const response = await fetch('/data/students/index.json');
+      const response = await fetch("/data/students/index.json");
       const studentsIndex = await response.json();
 
       // Find student by checking credentials
       let authenticatedStudent = null;
-      
+
       for (const studentId of studentsIndex.students) {
         const studentResponse = await fetch(`/data/students/${studentId}.json`);
         const studentData = await studentResponse.json();
-        
-        if (studentData.credentials && 
-            studentData.credentials.username === credentials.username &&
-            studentData.credentials.password === credentials.password) {
+
+        if (
+          studentData.credentials &&
+          studentData.credentials.username === credentials.username &&
+          studentData.credentials.password === credentials.password
+        ) {
           authenticatedStudent = studentData;
           break;
         }
@@ -36,18 +38,21 @@ const StudentLogin = ({ onLogin }) => {
 
       if (authenticatedStudent) {
         // Save authentication in localStorage
-        localStorage.setItem('student-auth', JSON.stringify({
-          student: authenticatedStudent,
-          loginTime: new Date().toISOString()
-        }));
-        
+        localStorage.setItem(
+          "student-auth",
+          JSON.stringify({
+            student: authenticatedStudent,
+            loginTime: new Date().toISOString(),
+          })
+        );
+
         onLogin(authenticatedStudent);
       } else {
-        setError('Kullanıcı adı veya şifre hatalı!');
+        setError("Kullanıcı adı veya şifre hatalı!");
       }
     } catch (error) {
-      console.error('Login error:', error);
-      setError('Giriş yaparken bir hata oluştu. Lütfen tekrar deneyin.');
+      console.error("Login error:", error);
+      setError("Giriş yaparken bir hata oluştu. Lütfen tekrar deneyin.");
     }
 
     setLoading(false);
@@ -68,10 +73,12 @@ const StudentLogin = ({ onLogin }) => {
               type="text"
               id="username"
               value={credentials.username}
-              onChange={(e) => setCredentials({
-                ...credentials,
-                username: e.target.value
-              })}
+              onChange={(e) =>
+                setCredentials({
+                  ...credentials,
+                  username: e.target.value,
+                })
+              }
               placeholder="örn: ahmet.yilmaz"
               required
             />
@@ -83,27 +90,21 @@ const StudentLogin = ({ onLogin }) => {
               type="password"
               id="password"
               value={credentials.password}
-              onChange={(e) => setCredentials({
-                ...credentials,
-                password: e.target.value
-              })}
+              onChange={(e) =>
+                setCredentials({
+                  ...credentials,
+                  password: e.target.value,
+                })
+              }
               placeholder="Şifrenizi girin"
               required
             />
           </div>
 
-          {error && (
-            <div className="error-message">
-              ❌ {error}
-            </div>
-          )}
+          {error && <div className="error-message">❌ {error}</div>}
 
-          <button 
-            type="submit" 
-            className="login-btn"
-            disabled={loading}
-          >
-            {loading ? '🔄 Giriş yapılıyor...' : '🚀 Giriş Yap'}
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "🔄 Giriş yapılıyor..." : "🚀 Giriş Yap"}
           </button>
         </form>
 

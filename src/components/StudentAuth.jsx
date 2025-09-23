@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import StudentLogin from './StudentLogin';
-import StudentDashboard from './StudentDashboard';
+import React, { useState, useEffect } from "react";
+import StudentLogin from "./StudentLogin";
+import StudentDashboard from "./StudentDashboard";
 
 const StudentAuth = () => {
   const [authenticatedStudent, setAuthenticatedStudent] = useState(null);
@@ -8,7 +8,7 @@ const StudentAuth = () => {
 
   useEffect(() => {
     // Check if student is already authenticated
-    const savedAuth = localStorage.getItem('student-auth');
+    const savedAuth = localStorage.getItem("student-auth");
     if (savedAuth) {
       try {
         const authData = JSON.parse(savedAuth);
@@ -20,11 +20,11 @@ const StudentAuth = () => {
         if (hoursDiff < 24) {
           setAuthenticatedStudent(authData.student);
         } else {
-          localStorage.removeItem('student-auth');
+          localStorage.removeItem("student-auth");
         }
       } catch (error) {
-        console.error('Error checking authentication:', error);
-        localStorage.removeItem('student-auth');
+        console.error("Error checking authentication:", error);
+        localStorage.removeItem("student-auth");
       }
     }
     setIsLoading(false);
@@ -36,29 +36,28 @@ const StudentAuth = () => {
 
   const handleLogout = () => {
     setAuthenticatedStudent(null);
-    localStorage.removeItem('student-auth');
+    localStorage.removeItem("student-auth");
   };
 
   if (isLoading) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontSize: '1.2rem',
-        color: '#667eea'
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "1.2rem",
+          color: "#667eea",
+        }}
+      >
         🔄 Yükleniyor...
       </div>
     );
   }
 
   return authenticatedStudent ? (
-    <StudentDashboard 
-      student={authenticatedStudent} 
-      onLogout={handleLogout}
-    />
+    <StudentDashboard student={authenticatedStudent} onLogout={handleLogout} />
   ) : (
     <StudentLogin onLogin={handleLogin} />
   );

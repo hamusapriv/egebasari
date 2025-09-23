@@ -1,34 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import './StudentDashboard.css';
+import React, { useState, useEffect } from "react";
+import "./StudentDashboard.css";
 
 const StudentDashboard = ({ student, onLogout }) => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('tr-TR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("tr-TR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const calculateGPA = () => {
     if (!student.grades || student.grades.length === 0) return 0;
-    const total = student.grades.reduce((sum, grade) => sum + (grade.score / grade.maxScore) * 100, 0);
+    const total = student.grades.reduce(
+      (sum, grade) => sum + (grade.score / grade.maxScore) * 100,
+      0
+    );
     return (total / student.grades.length).toFixed(1);
   };
 
   const getAttendanceRate = () => {
     if (!student.attendance || student.attendance.length === 0) return 0;
-    const present = student.attendance.filter(att => att.present).length;
+    const present = student.attendance.filter((att) => att.present).length;
     return ((present / student.attendance.length) * 100).toFixed(1);
   };
 
   const tabs = [
-    { id: 'overview', name: 'Genel Bakış', icon: '📊' },
-    { id: 'grades', name: 'Notlarım', icon: '📝' },
-    { id: 'attendance', name: 'Devamsızlık', icon: '📅' },
-    { id: 'homework', name: 'Ödevlerim', icon: '📚' }
+    { id: "overview", name: "Genel Bakış", icon: "📊" },
+    { id: "grades", name: "Notlarım", icon: "📝" },
+    { id: "attendance", name: "Devamsızlık", icon: "📅" },
+    { id: "homework", name: "Ödevlerim", icon: "📚" },
   ];
 
   return (
@@ -48,10 +51,10 @@ const StudentDashboard = ({ student, onLogout }) => {
 
       {/* Navigation Tabs */}
       <nav className="dashboard-nav">
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <button
             key={tab.id}
-            className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
+            className={`nav-tab ${activeTab === tab.id ? "active" : ""}`}
             onClick={() => setActiveTab(tab.id)}
           >
             {tab.icon} {tab.name}
@@ -61,7 +64,7 @@ const StudentDashboard = ({ student, onLogout }) => {
 
       {/* Main Content */}
       <main className="dashboard-content">
-        {activeTab === 'overview' && (
+        {activeTab === "overview" && (
           <div className="overview-section">
             <div className="stats-grid">
               <div className="stat-card">
@@ -71,7 +74,7 @@ const StudentDashboard = ({ student, onLogout }) => {
                   <p className="stat-value">{calculateGPA()}</p>
                 </div>
               </div>
-              
+
               <div className="stat-card">
                 <div className="stat-icon">📅</div>
                 <div className="stat-info">
@@ -79,7 +82,7 @@ const StudentDashboard = ({ student, onLogout }) => {
                   <p className="stat-value">%{getAttendanceRate()}</p>
                 </div>
               </div>
-              
+
               <div className="stat-card">
                 <div className="stat-icon">📚</div>
                 <div className="stat-info">
@@ -87,7 +90,7 @@ const StudentDashboard = ({ student, onLogout }) => {
                   <p className="stat-value">{student.homework?.length || 0}</p>
                 </div>
               </div>
-              
+
               <div className="stat-card">
                 <div className="stat-icon">📝</div>
                 <div className="stat-info">
@@ -104,10 +107,14 @@ const StudentDashboard = ({ student, onLogout }) => {
                   <div key={index} className="activity-item">
                     <span className="activity-icon">📝</span>
                     <div className="activity-details">
-                      <p><strong>{grade.subject}</strong> - {grade.type}</p>
+                      <p>
+                        <strong>{grade.subject}</strong> - {grade.type}
+                      </p>
                       <p className="activity-date">{formatDate(grade.date)}</p>
                     </div>
-                    <span className="activity-score">{grade.score}/{grade.maxScore}</span>
+                    <span className="activity-score">
+                      {grade.score}/{grade.maxScore}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -115,7 +122,7 @@ const StudentDashboard = ({ student, onLogout }) => {
           </div>
         )}
 
-        {activeTab === 'grades' && (
+        {activeTab === "grades" && (
           <div className="grades-section">
             <h2>📝 Notlarım</h2>
             <div className="grades-grid">
@@ -142,36 +149,47 @@ const StudentDashboard = ({ student, onLogout }) => {
           </div>
         )}
 
-        {activeTab === 'attendance' && (
+        {activeTab === "attendance" && (
           <div className="attendance-section">
             <h2>📅 Devamsızlık Durumum</h2>
             <div className="attendance-stats">
               <div className="attendance-summary">
                 <div className="summary-item">
                   <span className="summary-label">Toplam Gün:</span>
-                  <span className="summary-value">{student.attendance?.length || 0}</span>
+                  <span className="summary-value">
+                    {student.attendance?.length || 0}
+                  </span>
                 </div>
                 <div className="summary-item">
                   <span className="summary-label">Devam Eden:</span>
                   <span className="summary-value present">
-                    {student.attendance?.filter(att => att.present).length || 0}
+                    {student.attendance?.filter((att) => att.present).length ||
+                      0}
                   </span>
                 </div>
                 <div className="summary-item">
                   <span className="summary-label">Devamsızlık:</span>
                   <span className="summary-value absent">
-                    {student.attendance?.filter(att => !att.present).length || 0}
+                    {student.attendance?.filter((att) => !att.present).length ||
+                      0}
                   </span>
                 </div>
               </div>
             </div>
-            
+
             <div className="attendance-list">
               {student.attendance?.map((attendance, index) => (
-                <div key={index} className={`attendance-item ${attendance.present ? 'present' : 'absent'}`}>
-                  <div className="attendance-date">{formatDate(attendance.date)}</div>
+                <div
+                  key={index}
+                  className={`attendance-item ${
+                    attendance.present ? "present" : "absent"
+                  }`}
+                >
+                  <div className="attendance-date">
+                    {formatDate(attendance.date)}
+                  </div>
                   <div className="attendance-status">
-                    {attendance.present ? '✅ Devam Etti' : '❌ Devamsızlık'}
+                    {attendance.present ? "✅ Devam Etti" : "❌ Devamsızlık"}
                   </div>
                   {attendance.note && (
                     <div className="attendance-note">{attendance.note}</div>
@@ -182,16 +200,25 @@ const StudentDashboard = ({ student, onLogout }) => {
           </div>
         )}
 
-        {activeTab === 'homework' && (
+        {activeTab === "homework" && (
           <div className="homework-section">
             <h2>📚 Ödevlerim</h2>
             <div className="homework-list">
               {student.homework?.map((hw, index) => (
-                <div key={index} className={`homework-item ${hw.completed ? 'completed' : 'pending'}`}>
+                <div
+                  key={index}
+                  className={`homework-item ${
+                    hw.completed ? "completed" : "pending"
+                  }`}
+                >
                   <div className="homework-header">
                     <h3>{hw.subject}</h3>
-                    <span className={`homework-status ${hw.completed ? 'completed' : 'pending'}`}>
-                      {hw.completed ? '✅ Tamamlandı' : '⏳ Bekliyor'}
+                    <span
+                      className={`homework-status ${
+                        hw.completed ? "completed" : "pending"
+                      }`}
+                    >
+                      {hw.completed ? "✅ Tamamlandı" : "⏳ Bekliyor"}
                     </span>
                   </div>
                   <div className="homework-description">{hw.description}</div>
@@ -199,9 +226,7 @@ const StudentDashboard = ({ student, onLogout }) => {
                     <span>Verildi: {formatDate(hw.assignedDate)}</span>
                     <span>Teslim: {formatDate(hw.dueDate)}</span>
                   </div>
-                  {hw.note && (
-                    <div className="homework-note">💭 {hw.note}</div>
-                  )}
+                  {hw.note && <div className="homework-note">💭 {hw.note}</div>}
                 </div>
               ))}
             </div>
