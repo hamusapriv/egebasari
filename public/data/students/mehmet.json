@@ -1,0 +1,77 @@
+{
+  "id": "mehmet",
+  "name": "Mehmet Demir",
+  "class": "7. Sınıf",
+  "parentContact": {
+    "phone": "0533 987 65 43",
+    "email": "mehmet.anne@email.com"
+  },
+  "subjects": ["Matematik", "Türkçe", "Sosyal Bilgiler", "İngilizce"],
+  "attendance": [
+    {
+      "date": "2024-01-15",
+      "present": true,
+      "note": "Sosyal Bilgiler sunumunda çok başarılıydı"
+    },
+    {
+      "date": "2024-01-16",
+      "present": true,
+      "note": "Matematik problemlerini çözmekte zorlandı"
+    },
+    {
+      "date": "2024-01-17",
+      "present": true,
+      "note": "İngilizce dersinde aktif katılım"
+    },
+    {
+      "date": "2024-01-18",
+      "present": false,
+      "note": "Aile ziyareti sebebiyle izinli"
+    }
+  ],
+  "grades": [
+    {
+      "subject": "Sosyal Bilgiler",
+      "score": 95,
+      "maxScore": 100,
+      "date": "2024-01-11",
+      "type": "Proje",
+      "note": "Mükemmel sunum ve araştırma"
+    },
+    {
+      "subject": "Türkçe",
+      "score": 88,
+      "maxScore": 100,
+      "date": "2024-01-13",
+      "type": "Sınav",
+      "note": "Okuma anlama becerisi iyi"
+    },
+    {
+      "subject": "Matematik",
+      "score": 65,
+      "maxScore": 100,
+      "date": "2024-01-15",
+      "type": "Sınav",
+      "note": "Temel işlemlerde eksiklikler var"
+    },
+    {
+      "subject": "İngilizce",
+      "score": 82,
+      "maxScore": 100,
+      "date": "2024-01-16",
+      "type": "Ödev",
+      "note": "Telaffuzu gelişmiş, yazma becerisini geliştirmeli"
+    }
+  ],
+  "teacherNotes": "Mehmet, özellikle sosyal bilimler alanında çok yetenekli bir öğrenci. Tarih ve coğrafya konularında derin ilgi gösteriyor. Matematik dersinde temel kavramlarda zorlanıyor, ek destekle bu eksiklik kapatılabilir. Sınıfta liderlik özelliklerini sergiliyor.",
+  "goals": [
+    "Matematik notunu 75'e yükseltmek",
+    "İngilizce yazma becerilerini geliştirmek",
+    "Sosyal Bilgiler olimpiyatına katılmak"
+  ],
+  "achievements": [
+    "Sosyal Bilgiler proje yarışması 1. lik",
+    "Sınıf başkanlığı"
+  ],
+  "lastUpdated": "2024-01-20T11:15:00Z"
+}

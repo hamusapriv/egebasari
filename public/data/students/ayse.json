@@ -1,0 +1,78 @@
+{
+  "id": "ayse",
+  "name": "Ayşe Kaya",
+  "class": "8. Sınıf",
+  "parentContact": {
+    "phone": "0534 111 22 33",
+    "email": "ayse.baba@email.com"
+  },
+  "subjects": ["Matematik", "Türkçe", "Fen Bilgisi", "İngilizce", "Resim"],
+  "attendance": [
+    {
+      "date": "2024-01-15",
+      "present": true,
+      "note": "Resim dersinde harika bir çalışma yaptı"
+    },
+    {
+      "date": "2024-01-16",
+      "present": true,
+      "note": "Fen Bilgisi laboratuvarında dikkatli çalıştı"
+    },
+    {
+      "date": "2024-01-17",
+      "present": true,
+      "note": "Matematik sınavına çok iyi hazırlanmış"
+    },
+    {
+      "date": "2024-01-18",
+      "present": true,
+      "note": "İngilizce konuşma pratiğinde özgüven kazandı"
+    }
+  ],
+  "grades": [
+    {
+      "subject": "Resim",
+      "score": 98,
+      "maxScore": 100,
+      "date": "2024-01-09",
+      "type": "Proje",
+      "note": "Yaratıcılığı ve teknik becerisi mükemmel"
+    },
+    {
+      "subject": "Fen Bilgisi",
+      "score": 91,
+      "maxScore": 100,
+      "date": "2024-01-12",
+      "type": "Sınav",
+      "note": "Biyoloji konularında çok başarılı"
+    },
+    {
+      "subject": "Matematik",
+      "score": 87,
+      "maxScore": 100,
+      "date": "2024-01-14",
+      "type": "Sınav",
+      "note": "Geometri ve cebir dengeli başarı"
+    },
+    {
+      "subject": "Türkçe",
+      "score": 89,
+      "maxScore": 100,
+      "date": "2024-01-16",
+      "type": "Ödev",
+      "note": "Yaratıcı yazma becerisi gelişmiş"
+    }
+  ],
+  "teacherNotes": "Ayşe, çok yetenekli ve çalışkan bir öğrenci. Özellikle sanat ve fen alanlarında parlıyor. Matematik derslerinde de istikrarlı bir performans sergiliyor. Sınıf arkadaşlarına yardım etmeyi seviyor ve empati kurabilen bir kişilik.",
+  "goals": [
+    "Resim yarışmalarına katılmak",
+    "Fen Bilgisi notunu 95'e çıkarmak",
+    "Liderlik becilerini geliştirmek"
+  ],
+  "achievements": [
+    "Okul resim sergisi birincisi",
+    "Fen Bilgisi proje sergisi ikincisi",
+    "Yılın öğrencisi adayı"
+  ],
+  "lastUpdated": "2024-01-20T09:45:00Z"
+}

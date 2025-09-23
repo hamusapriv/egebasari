@@ -1,0 +1,10 @@
+# Netlify redirects for SPA routing
+/*    /index.html   200
+
+# Admin panel route
+/admin    /index.html   200
+
+# Student pages routes  
+/ahmet    /index.html   200
+/mehmet   /index.html   200
+/ayse     /index.html   200

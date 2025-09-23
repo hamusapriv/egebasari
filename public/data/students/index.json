@@ -1,0 +1,20 @@
+{
+  "students": [
+    {
+      "id": "ahmet",
+      "name": "Ahmet Yılmaz",
+      "class": "8. Sınıf"
+    },
+    {
+      "id": "mehmet",
+      "name": "Mehmet Demir",
+      "class": "7. Sınıf"
+    },
+    {
+      "id": "ayse",
+      "name": "Ayşe Kaya",
+      "class": "8. Sınıf"
+    }
+  ],
+  "lastUpdated": "2024-01-20T12:00:00Z"
+}

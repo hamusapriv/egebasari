@@ -1,0 +1,69 @@
+{
+  "id": "ahmet",
+  "name": "Ahmet Yılmaz",
+  "class": "8. Sınıf",
+  "parentContact": {
+    "phone": "0532 123 45 67",
+    "email": "ahmet.veli@email.com"
+  },
+  "subjects": ["Matematik", "Türkçe", "Fen Bilgisi", "İngilizce"],
+  "attendance": [
+    {
+      "date": "2024-01-15",
+      "present": true,
+      "note": "Matematik dersi aktif katılım gösterdi"
+    },
+    {
+      "date": "2024-01-16",
+      "present": true,
+      "note": "Türkçe sınavında başarılı oldu"
+    },
+    {
+      "date": "2024-01-17",
+      "present": false,
+      "note": "Hastalık sebebiyle katılamadı"
+    },
+    {
+      "date": "2024-01-18",
+      "present": true,
+      "note": "İngilizce dersinde ödevini sundu"
+    }
+  ],
+  "grades": [
+    {
+      "subject": "Matematik",
+      "score": 85,
+      "maxScore": 100,
+      "date": "2024-01-10",
+      "type": "Sınav",
+      "note": "Geometri konularında başarılı"
+    },
+    {
+      "subject": "Türkçe",
+      "score": 92,
+      "maxScore": 100,
+      "date": "2024-01-12",
+      "type": "Ödev",
+      "note": "Kompozisyon yazma becerisi gelişmiş"
+    },
+    {
+      "subject": "Fen Bilgisi",
+      "score": 78,
+      "maxScore": 100,
+      "date": "2024-01-14",
+      "type": "Sınav",
+      "note": "Kimya konularında daha çok çalışmalı"
+    }
+  ],
+  "teacherNotes": "Ahmet, genel olarak derslerine düzenli katılan ve başarılı bir öğrenci. Matematik ve Türkçe derslerinde özellikle öne çıkıyor. Fen Bilgisi dersinde kimya konularında biraz daha çaba sarf etmesi gerekiyor. Sınıf arkadaşları ile iyi ilişkiler kurabiliyor.",
+  "goals": [
+    "Fen Bilgisi notunu 85'e çıkarmak",
+    "İngilizce kelime dağarcığını genişletmek",
+    "Matematik olimpiyatına hazırlanmak"
+  ],
+  "achievements": [
+    "Ocak ayı başarı belgesi",
+    "Türkçe kompozisyon yarışması 2. lik"
+  ],
+  "lastUpdated": "2024-01-20T10:30:00Z"
+}
